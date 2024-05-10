@@ -60,10 +60,10 @@ export default function RegisterUser() {
   const [loading, setLoading] = useState(false); // State to track loading state
   const [error, setError] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [userRegisteredData, setUserRegisteredData] = useState({
-    fullName: "",
-    uniqueID: "",
-  });
+  // const [userRegisteredData, setUserRegisteredData] = useState({
+  //   fullName: "",
+  //   uniqueID: "",
+  // });
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -100,15 +100,15 @@ export default function RegisterUser() {
       ) {
         setLoading(false);
         userUniqueID = response.payload.uniqueID;
-        const { fullName, uniqueID } = response.payload;
-        setUserRegisteredData({ fullName, uniqueID });
+        // const { fullName, uniqueID } = response.payload;
+        // setUserRegisteredData({ fullName, uniqueID });
         setShowSuccessModal(true);
         setTimeout(() => {
           router.push(
             `/user/signin?uniqueID=${encodeURIComponent(userUniqueID)}`
           );
           // router.push("/user/signin");
-        }, 10000); // Redirect to signin page after 2 seconds
+        }, 5000); // Redirect to signin page after 2 seconds
       }
     } catch (error) {
       console.error("Registration error:", error);
@@ -516,21 +516,21 @@ export default function RegisterUser() {
       >
         <Modal.Header>
           {" "}
-          Congratulations {userRegisteredData.fullName},
+          Congratulations!!!
+          {/* {userRegisteredData.fullName}, */}
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Your registration is under review.
+              Registration is successful and your account is under review.
             </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Please check your registered mail for your registartion status and
-              signin details.
+              Proceeding you to to signin...
             </p>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 animate-bounce">
             ...
           </p>
         </Modal.Footer>
@@ -554,28 +554,6 @@ export default function RegisterUser() {
           </div>
         </Modal.Body>
       </Modal>
-
-      {/* <Modal
-        show={showSuccessModal}
-        onClose={() => setShowSuccessModal(false)}
-        title="Success"
-      >
-        <div className="flex flex-col items-center">
-          <p>
-            Congratulations {userRegisteredData.fullName}, your registration is
-            under review.
-          </p>
-          <p>
-            Please check your registered mail for your registartion status and
-            signin details.
-          </p>
-          <p>Proceeding you to signin...</p>
-        </div>
-      </Modal> */}
-
-      {/* <Modal show={!!error} onClose={() => setError("")} title="Error">
-        <div className="flex flex-col items-center">{error}</div>
-      </Modal> */}
     </div>
   );
 }

@@ -86,11 +86,10 @@ function sendEmail(email, uniqueID) {
 }
 
 // Utility function to generate uniqueID for SuperAdmin
-// Utility function to generate uniqueID for Admin
 let counter = 0;
 
 function generateUniqueID() {
   counter++;
-  const paddedCounter = counter.toString().padStart(3, "0"); // Ensures 3 digits, padded with zeros if necessary
+  const paddedCounter = counter.toString().padStart(3, "0");
   return `TOYCA24-SADM-${paddedCounter}`;
 }

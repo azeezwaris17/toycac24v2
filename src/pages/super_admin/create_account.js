@@ -43,10 +43,10 @@ export default function RegisterUser() {
   const [loading, setLoading] = useState(false); // State to track loading state
   const [error, setError] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [superAdminRegisteredData, setSuperAdminRegisteredData] = useState({
-    fullName: "",
-    uniqueID: "",
-  });
+  // const [superAdminRegisteredData, setSuperAdminRegisteredData] = useState({
+  //   fullName: "",
+  //   uniqueID: "",
+  // });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,8 +72,8 @@ export default function RegisterUser() {
       ) {
         setLoading(false);
         superAdminUniqueID = response.payload.uniqueID;
-        const { fullName, uniqueID } = response.payload;
-        setSuperAdminRegisteredData({ fullName, uniqueID });
+        // const { fullName, uniqueID } = response.payload;
+        // setSuperAdminRegisteredData({ fullName, uniqueID });
         setShowSuccessModal(true);
         setTimeout(() => {
           router.push(
@@ -81,7 +81,7 @@ export default function RegisterUser() {
               superAdminUniqueID
             )}`
           );
-        }, 10000);
+        }, 5000);
       } else {
         // Handle status code errors if present
         if (response.payload && response.payload.error) {
@@ -299,7 +299,8 @@ export default function RegisterUser() {
       >
         <Modal.Header>
           {" "}
-          Congratulations {superAdminRegisteredData.fullName},
+          Congratulations!!!
+          {/* {superAdminRegisteredData.fullName}, */}
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
@@ -307,14 +308,12 @@ export default function RegisterUser() {
               your account has been created successfully.
             </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Proceed to signin with your unique ID:{" "}
-              {superAdminRegisteredData.uniqueID} as your username and your
-              registered password as password.
+              Proceed to signin...
             </p>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 animate-bounce">
             ...
           </p>
         </Modal.Footer>

@@ -14,19 +14,32 @@ import superAdminApproveUserReducer from "./super_admin/superAdminApproveUserAcc
 import superAdminFetchAllAdminsReducer from "./super_admin/superAdminFetchAllAdmins";
 import superAdminApproveAdminReducer from "./super_admin/superAdminApproveAdminAccount";
 
+import superAdminFetchAllRolesReducer from "./super_admin/superAdminFetchAllRoles";
+import superAdminAssignRoleReducer from "./super_admin/superAdminAssignRole";
+import superAdminRevokeRoleReducer from "./super_admin/superAdminRevokeRole";
+
 export default configureStore({
   reducer: {
     userRegistrationAuth: userRegistrationAuthReducer,
     userSigninAuth: userSigninAuthReducer,
-    superAdminRegistrationAuth: superAdminRegistrationAuthReducer,
-    superAdminSigninAuth: superAdminSigninAuthReducer,
+
     adminRegistrationAuth: adminRegistrationAuthReducer,
     adminSigninAuth: adminSigninAuthReducer,
+
     adminFetchAllUsers: adminFetchAllUsersReducer,
     adminApproveUser: adminApproveUserReducer,
+
+    superAdminRegistrationAuth: superAdminRegistrationAuthReducer,
+    superAdminSigninAuth: superAdminSigninAuthReducer,
+
     superAdminFetchAllUsers: superAdminFetchAllUsersReducer,
     superAdminApproveUser: superAdminApproveUserReducer,
+
     superAdminFetchAllAdmins: superAdminFetchAllAdminsReducer,
     superAdminApproveAdmin: superAdminApproveAdminReducer,
+
+    superAdminFetchAllRoles: superAdminFetchAllRolesReducer,
+    superAdminAssignRole: superAdminAssignRoleReducer,
+    superAdminRevokeRole: superAdminRevokeRoleReducer,
   },
 });

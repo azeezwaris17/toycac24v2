@@ -1,7 +1,7 @@
 // [adminId].js
 
-import connectDB from "../../mongodb";
-import AdminAccountRegistration from "../../../../models/admin/create_account";
+import connectDB from "../../../mongodb";
+import AdminAccountRegistration from "../../../../../models/admin/create_account";
 import nodemailer from "nodemailer"; // Import nodemailer
 
 connectDB();

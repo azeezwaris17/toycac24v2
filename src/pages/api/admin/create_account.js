@@ -57,13 +57,12 @@ export default async function handler(req, res) {
 }
 
 // Utility function to generate uniqueID for Admin
-let adminCounter = 1;
+let counter = 0;
 
 function generateUniqueID() {
-  const adminId = adminCounter.toString().padStart(3, "0");
-  const uniqueID = `TOYCA24-ADM-${adminId}`;
-  adminCounter++; // Increment adminCounter for the next admin
-  return uniqueID;
+  counter++;
+  const paddedCounter = counter.toString().padStart(3, "0");
+  return `TOYCA24-ADM-${paddedCounter}`;
 }
 
 async function sendEmail(email, fullName, uniqueID) {

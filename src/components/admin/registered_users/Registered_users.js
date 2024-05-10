@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Import the slices
@@ -10,7 +10,13 @@ import { approveUser } from "../../../redux/admin/adminApproveUserAccount";
 
 import toast from "react-hot-toast";
 import { BsSearch, BsFilter, BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { AiOutlineDownload } from "react-icons/ai";
+import { LiaSpinnerSolid } from "react-icons/lia";
+import { MdOutlineFileDownloadDone } from "react-icons/md";
 import Image from "next/image";
+import { saveAs } from "file-saver";
+import ExcelJS from "exceljs";
+import * as XLSX from "xlsx";
 
 const RegisteredUsersTable = ({ users, openUserDetailsModal }) => {
   return (
@@ -186,8 +192,77 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
 
 export default function RegisteredUsersComponent() {
   const users = useSelector((state) => state.adminFetchAllUsers.users);
-
   const dispatch = useDispatch();
+
+  // State variables for download format and data
+  const [downloadFormat, setDownloadFormat] = useState(null);
+  const [downloadData, setDownloadData] = useState([]);
+
+  // Function to generate data for download
+  const generateDownloadData = useCallback(() => {
+    // Transform 'users' data into the desired format for download
+    const formattedData = users.map((user) => ({
+      FullName: user.fullName,
+      Category: user.category,
+      RegistrationStatus: user.approved ? "Approved" : "Pending",
+    }));
+
+    return formattedData;
+  }, [users]);
+
+  // Function to handle download button click
+  const handleDownload = useCallback(async () => {
+    setLoading(true); // Set loading state when download starts
+
+    try {
+      const data = generateDownloadData();
+
+      if (downloadFormat === "excel") {
+        // Generate Excel file
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet("Users");
+
+        // Add headers
+        const headers = Object.keys(data[0]);
+        sheet.addRow(headers);
+
+        // Add data to the worksheet
+        data.forEach((row) => {
+          sheet.addRow(Object.values(row));
+        });
+
+        // Save the workbook
+        const buffer = await workbook.xlsx.writeBuffer();
+        saveAs(new Blob([buffer]), "TOYCAC'24 Registered Campers.xlsx");
+      } else if (downloadFormat === "google_sheets") {
+        // Generate Google Sheets file
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Users");
+        XLSX.writeFile(wb, "TOYCAC'24 Registered Campers.xlsx");
+      }
+
+      // Set success icon after successful download
+      setDownloadData(data);
+
+      // Reset icon and select option after 2 seconds
+      setTimeout(() => {
+        setDownloadData([]);
+        setDownloadFormat("");
+      }, 2000);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      // Handle error
+    } finally {
+      setLoading(false); // Clear loading state when download completes
+    }
+  }, [downloadFormat, generateDownloadData]);
+
+  useEffect(() => {
+    if (downloadFormat) {
+      handleDownload();
+    }
+  }, [downloadFormat, handleDownload]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -331,6 +406,7 @@ export default function RegisteredUsersComponent() {
       </h1>
 
       <div className="flex flex-col lg:flex-row mt-4 mb-4">
+        {/* search system */}
         <div className="relative flex items-start lg:items-center">
           <input
             type="text"
@@ -342,19 +418,48 @@ export default function RegisteredUsersComponent() {
           <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
 
-        <div className="relative mt-3 lg:mt-0 lg:ml-4">
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
-          >
-            <option value="all">All</option>
-            <option value="false">Pending</option>{" "}
-            {/* Changed 'pending' to 'false' */}
-            <option value="true">Approved</option>{" "}
-            {/* Changed 'approved' to 'true' */}
-          </select>
-          <BsFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <div className="flex flex-row gap-2">
+          {/* filter system */}
+          <div className="relative mt-3 lg:mt-0 lg:ml-4">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+            >
+              <option value="all">All</option>
+              <option value="false">Pending</option>{" "}
+              {/* Changed 'pending' to 'false' */}
+              <option value="true">Approved</option>{" "}
+              {/* Changed 'approved' to 'true' */}
+            </select>
+            <BsFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          </div>
+
+          {/* Download button and format selection */}
+          <div className="relative mt-3 lg:mt-0 lg:ml-4">
+            <select
+              value={downloadFormat}
+              onChange={(e) => setDownloadFormat(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+            >
+              <option value="">Select Format</option>
+              <option value="excel">Excel</option>
+              <option value="google_sheets">Google Sheets</option>
+            </select>
+
+            <button
+              disabled={!downloadFormat}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >
+              {loading ? (
+                <LiaSpinnerSolid className="animate-spin" /> // Render loading spinner while downloading
+              ) : downloadData.length > 0 ? (
+                <MdOutlineFileDownloadDone /> // Render success icon after successful download
+              ) : (
+                <AiOutlineDownload /> // Default download icon
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

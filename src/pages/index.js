@@ -14,8 +14,6 @@ export default function Home() {
 
       {/* Hero section */}
       <section
-        // style={{ backgroundImage: `url(/toycac24BG.jpg)` }}
-        // className="bg-cover bg-center bg-transparent fixed w-full z-10 top-0 start-0"
         className="fixed py-16"
       >
         <div className="container mx-auto px-4">

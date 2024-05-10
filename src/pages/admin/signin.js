@@ -79,13 +79,13 @@ export default function SigninUser() {
             toast.error(
               data && data.message
                 ? data.message
-                : "Account is pending approval"
+                : "Forbidden, you do not have access right"
             );
           } else if (status === 401) {
             toast.error(
               data && data.message
                 ? data.message
-                : "Invalid username or password"
+                : "Account is pending approval"
             );
           } else if (status === 500) {
             toast.error(

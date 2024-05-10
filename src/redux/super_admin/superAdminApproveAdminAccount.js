@@ -12,7 +12,9 @@ export const approveAdmin = createAsyncThunk(
   "super_admin/approveAdmin",
   async (adminId) => {
     try {
-      const response = await axios.put(`/api/super_admin/admins/${adminId}`);
+      const response = await axios.put(
+        `/api/super_admin/admins/approve_admin/${adminId}`
+      );
       return response.data;
     } catch (error) {
       console.error("approveAdmin error:", error);

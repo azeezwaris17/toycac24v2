@@ -76,13 +76,14 @@ export default function RegisterAdmin() {
         setLoading(false);
         // Update uniqueID value here
         adminUniqueID = response.payload.uniqueID;
-        setAdminRegisteredData({ fullName, uniqueID });
+        // adminFullName = response.payload.fullName;
+        // setAdminRegisteredData({ adminFullName, adminUniqueID });
         setShowSuccessModal(true);
         setTimeout(() => {
           router.push(
             `/admin/signin?uniqueID=${encodeURIComponent(adminUniqueID)}`
           );
-        }, 10000);
+        }, 5000);
       } else {
         if (response.payload && response.payload.error) {
           const { status, data } = response.payload.error;
@@ -300,7 +301,7 @@ export default function RegisterAdmin() {
         <Modal.Body>
           <div className="space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              your account has been created successfully.
+              Registration is successful and your account is under review.
             </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               Proceeding you to to signin...

@@ -34,12 +34,12 @@ export default function Navbar() {
             />
           </div>
 
-          <span className="text-xl font-semibold whitespace-nowrap dark:text-white">
+          {/* <span className="text-xl font-semibold whitespace-nowrap dark:text-white">
             TOYCAC&apos;24
-          </span>
+          </span> */}
         </div>
 
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <div className="flex md:order-2 space-x-2 md:space-x-0 rtl:space-x-reverse">
 
         <button
             type="button"

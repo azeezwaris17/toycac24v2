@@ -175,8 +175,8 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
               <div className="mt-4">
                 <Image
                   src={imageUrl}
-                  width={100}
-                  height={100}
+                  width={300}
+                  height={300}
                   alt="Proof of Payment"
                   className="max-w-full"
                 />

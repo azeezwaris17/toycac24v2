@@ -53,6 +53,14 @@ const RegisteredAdminsTable = ({ admins, openAdminDetailsModal }) => {
             >
               Email
             </th>
+
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Username
+            </th>
+
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -84,9 +92,15 @@ const RegisteredAdminsTable = ({ admins, openAdminDetailsModal }) => {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                 {admin.fullName}
               </td>
+              
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                 {admin.email}
               </td>
+
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                {admin.uniqueID}
+              </td>
+
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                 {admin.approved ? (
                   <span className="bg-green-100 text-green-800 rounded-full px-2">

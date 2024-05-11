@@ -154,7 +154,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
             <p>Registration Status: {user.approved ? 'Approved' : 'Pending'}</p>
             <div className="flex flex-row items-center gap-2">
               <p>
-                Proof: {' '}
+                Proof of Payment: {' '}
                 <span className="text-[12px] md:text-md">
                   {user.proofOfPayment}
                 </span>
@@ -170,10 +170,10 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
             {/* Display proof of payment directly within the modal */}
             {showProofOfPayment && (
               <div className="mt-4">
-                <Image
+               <Image
                   src={imageUrl}
-                  width={100}
-                  height={100}
+                  width={300}
+                  height={300}
                   alt="Proof of Payment"
                   className="max-w-full"
                 />
@@ -210,6 +210,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
     </div>
   );
 };
+
 
 export default function RegisteredUsersComponent() {
   // const users = useSelector((state) => state.adminApproveUserAccount.users);

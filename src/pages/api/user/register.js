@@ -12,8 +12,6 @@ connectDB();
 
 // Load credentials from a JSON file
 // Define the service account credentials
-
-
 const credentials = {
   "type": "service_account",
   "project_id": "toycac24-419900",
@@ -54,6 +52,13 @@ export default async function handler(req, res) {
 
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      // Check if the email already exists
+      const existingUser = await UserAccountRegistration.findOne({ email: req.body.email });
+      if (existingUser) {
+        // If the email exists, send an appropriate error response to the user
+        return res.status(400).json({ message: "This email has been registered, try another one" });
       }
 
       // Log the category selected by the user
@@ -109,8 +114,27 @@ export default async function handler(req, res) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
       const categoryID = getCategoryID(category);
-      const participantID = generateParticipantID();
-      const uniqueID = `TOYCAC24-${categoryID}-${participantID}`;
+
+      // Fetch the last user from the database to extract the counter
+      const lastUser = await UserAccountRegistration.findOne({}, {}, { sort: { 'uniqueID': -1 } });
+
+      let counter = 1;
+      if (lastUser && lastUser.uniqueID) {
+        // Extract the counter from the last uniqueID
+        const parts = lastUser.uniqueID.split('-');
+        if (parts.length === 3) {
+          const lastCounter = parseInt(parts[2]);
+          if (!isNaN(lastCounter)) {
+            counter = lastCounter + 1;
+          }
+        }
+      }
+
+      // Pad the counter with zeroes
+      const paddedCounter = counter.toString().padStart(3, '0');
+
+      // Generate the new uniqueID
+      const uniqueID = `TOYCAC24-${categoryID}-${paddedCounter}`;
 
       const userData = new UserAccountRegistration({
         fullName: req.body.fullName,
@@ -141,7 +165,7 @@ export default async function handler(req, res) {
         .toString()
         .padStart(2, "0");
       const day = registrationDate.getDate().toString().padStart(2, "0");
-      const folderPath = `public/uploads/proofOfPayment/${year}-${month}-${day}`;
+      const folderPath = `public/uploads/proofOfPayment`;
 
       // Ensure the target directory exists
       fs.mkdir(folderPath, { recursive: true }, (err) => {
@@ -160,7 +184,7 @@ export default async function handler(req, res) {
               console.log("File moved successfully");
 
               // Construct the imageUrl relative to the public directory
-              const imageUrl = `/uploads/proofOfPayment/${year}-${month}-${day}/${req.file.filename}`;
+              const imageUrl = `/uploads/proofOfPayment/${req.file.filename}`;
               console.log(imageUrl);
 
               res.status(201).json({
@@ -216,24 +240,6 @@ async function appendToSheet(userData) {
   }
 }
 
-let participantCounter = 1;
-let houseAbbreviationIndex = 0;
-
-function generateParticipantID() {
-  const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"];
-  const currentAbbreviation = houseAbbreviations[houseAbbreviationIndex];
-  const participantID = `${currentAbbreviation}${participantCounter
-    .toString()
-    .padStart(3, "0")}`;
-
-  // Update counters for next iteration
-  participantCounter++;
-  houseAbbreviationIndex =
-    (houseAbbreviationIndex + 1) % houseAbbreviations.length;
-
-  return participantID;
-}
-
 function getCategoryID(category) {
   switch (category.toLowerCase()) {
     case "student":
@@ -242,7 +248,7 @@ function getCategoryID(category) {
       return "IOTB";
     case "children":
       return "CHLD";
-      case "nonTimsanite":
+    case "nonTimsanite":
       return "NT";
     default:
       return "OTH";

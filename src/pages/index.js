@@ -76,7 +76,7 @@ export default function Home() {
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               We are excited to have you here! Before you proceed with the
               registration, please be informed that you need to provide your
-              evidence of payment.
+              camp registration proof of payment.
             </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               If you are yet to pay, kindly do so the following account details and come

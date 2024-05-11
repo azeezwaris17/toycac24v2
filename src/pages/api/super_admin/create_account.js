@@ -20,6 +20,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+     // Check if the email already exists
+     const existingSuperAdmin = await SuperAdminAccountRegistration.findOne({ email: req.body.email });
+     if (existingSuperAdmin) {
+       // If the email exists, send an appropriate error response to the user
+       return res.status(400).json({ message: "This email has been registered, try another one" });
+     }
+
     // Hash the password before saving it to the database
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -88,8 +95,21 @@ function sendEmail(email, uniqueID) {
 // Utility function to generate uniqueID for SuperAdmin
 let counter = 0;
 
-function generateUniqueID() {
-  counter++;
-  const paddedCounter = counter.toString().padStart(3, "0");
-  return `TOYCA24-SADM-${paddedCounter}`;
+// Utility function to generate uniqueID for Admin
+async function generateUniqueID() {
+  try {
+    const lastAdmin = await SuperAdminAccountRegistration.findOne().sort({$natural:-1}).limit(1);
+    if (lastAdmin) {
+      const lastUniqueID = lastAdmin.uniqueID;
+      const lastCounter = parseInt(lastUniqueID.split("-")[2]);
+      const paddedCounter = (lastCounter + 1).toString().padStart(3, "0");
+      return `TOYCAC24-SADM-${paddedCounter}`;
+    } else {
+      // If there are no admins in the database yet
+      return `TOYCAC24-SADM-001`;
+    }
+  } catch (error) {
+    console.error("Error generating unique ID for admin:", error);
+    throw new Error("Failed to generate unique ID for admin");
+  }
 }

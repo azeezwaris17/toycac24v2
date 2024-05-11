@@ -6,6 +6,14 @@ const jwt = require("jsonwebtoken");
 // Generate a random JWT secret
 const jwtSecret = crypto.randomBytes(64).toString("hex");
 
+// Define the notification schema
+const notificationSchema = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'SuperAdminAccountRegistration', required: true },
+  recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'SuperAdminAccountRegistration', required: true },
+  message: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
+
 // Define the schema
 const superAdminSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
@@ -14,6 +22,7 @@ const superAdminSchema = new mongoose.Schema({
   password: { type: String, required: true },
   uniqueID: { type: String, required: true },
   role: { type: String, enum: ["superAdmin"], default: "superAdmin" }, // Include role field
+  notifications: [notificationSchema], // Include notifications field
 });
 
 // Method to compare password for user signin

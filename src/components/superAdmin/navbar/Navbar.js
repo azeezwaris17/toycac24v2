@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-// import Notification from "../notification/Notification";
+import { useRouter } from "next/router"; 
+import Notifications from "../notifications/Notifications";
 
 export default function Navbar({ onNavigate, username }) {
   const [activeButton, setActiveButton] = useState(null);
   const menuRef = useRef(null);
+  const router = useRouter(); 
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -22,6 +24,12 @@ export default function Navbar({ onNavigate, username }) {
 
   const handleHamburgerClick = (buttonName) => {
     setActiveButton(activeButton === buttonName ? null : buttonName);
+  };
+
+  // Function to handle sign out
+  const handleSignOut = () => {
+    router.push("/super_admin/signin"); 
+    setActiveButton(null);
   };
 
   return (
@@ -48,7 +56,7 @@ export default function Navbar({ onNavigate, username }) {
       </div>
 
       {/* Notification component */}
-      {/* <Notification /> */}
+      <Notifications />
 
       {/* Hamburger menu button */}
       <div className="block lg:hidden">
@@ -82,17 +90,6 @@ export default function Navbar({ onNavigate, username }) {
           <p>Hi! {username}</p>
 
           <ul className="flex flex-col font-medium">
-            {/* <li>
-              <button
-                className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={() => {
-                  onNavigate("dashboard");
-                  setActiveButton(null);
-                }}
-              >
-                Dashboard
-              </button>
-            </li> */}
             <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -119,13 +116,11 @@ export default function Navbar({ onNavigate, username }) {
 
             <hr />
 
+            {/* Modified sign out button */}
             <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={() => {
-                  onNavigate("signout");
-                  setActiveButton(null);
-                }}
+                onClick={handleSignOut} // Use handleSignOut function
               >
                 Sign Out
               </button>

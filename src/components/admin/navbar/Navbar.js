@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-// import Notification from "../notification/Notification";
+import { useRouter } from "next/router"; 
 
 export default function Navbar({ onNavigate, username }) {
   const [activeButton, setActiveButton] = useState(null);
   const menuRef = useRef(null);
+  const router = useRouter(); 
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -22,6 +23,12 @@ export default function Navbar({ onNavigate, username }) {
 
   const handleHamburgerClick = (buttonName) => {
     setActiveButton(activeButton === buttonName ? null : buttonName);
+  };
+
+   // Function to handle sign out
+   const handleSignOut = () => {
+    router.push("/admin/signin"); 
+    setActiveButton(null);
   };
 
   return (
@@ -47,8 +54,6 @@ export default function Navbar({ onNavigate, username }) {
         </span>
       </div>
 
-      {/* Notification component */}
-      {/* <Notification /> */}
 
       {/* Hamburger menu button */}
       <div className="block lg:hidden">
@@ -102,12 +107,9 @@ export default function Navbar({ onNavigate, username }) {
               </button>
             </li>
             <li>
-              <button
+            <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={() => {
-                  onNavigate("signout");
-                  setActiveButton(null);
-                }}
+                onClick={handleSignOut} // Use handleSignOut function
               >
                 Sign Out
               </button>

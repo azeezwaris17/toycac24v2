@@ -9,10 +9,12 @@ export default function Navbar() {
     router.push("/user/register");
   };
 
+  const handleSigninButtonClick = () => {
+    router.push("/user/signin");
+  };
+
   return (
     <nav
-      // className="bg-cover bg-center"
-      // style={{ backgroundImage: `url(/toycac24BG.jpg)` }}
       className="bg-cover bg-center bg-transparent fixed w-full z-20 top-0 start-0"
     >
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-3 sm:mx-auto p-2 my-3 rounded-md border border-[#DFBF76]">
@@ -38,6 +40,15 @@ export default function Navbar() {
         </div>
 
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+
+        <button
+            type="button"
+            className="text-[#DFBF76] hover:outline-[#647862] font-medium rounded-lg text-sm px-4 py-2 text-center"
+            onClick={handleSigninButtonClick}
+          >
+           Signin
+          </button>
+
           <button
             type="button"
             className="text-white bg-[#647862] hover:bg-[#DFBF76] font-medium rounded-lg text-sm px-4 py-2 text-center"
@@ -45,6 +56,8 @@ export default function Navbar() {
           >
             Register
           </button>
+
+         
         </div>
       </div>
     </nav>

@@ -17,9 +17,13 @@ import superAdminApproveAdminReducer from "./super_admin/superAdminApproveAdminA
 import superAdminFetchAllRolesReducer from "./super_admin/superAdminFetchAllRoles";
 import superAdminAssignRoleReducer from "./super_admin/superAdminAssignRole";
 import superAdminRevokeRoleReducer from "./super_admin/superAdminRevokeRole";
+import superAdminNotificationReducer from "./super_admin/notifications"
+
+
 
 export default configureStore({
   reducer: {
+    // name of slice: name of reducer
     userRegistrationAuth: userRegistrationAuthReducer,
     userSigninAuth: userSigninAuthReducer,
 
@@ -41,5 +45,6 @@ export default configureStore({
     superAdminFetchAllRoles: superAdminFetchAllRolesReducer,
     superAdminAssignRole: superAdminAssignRoleReducer,
     superAdminRevokeRole: superAdminRevokeRoleReducer,
+    superAdminNotifications: superAdminNotificationReducer
   },
 });

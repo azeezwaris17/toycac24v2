@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router"; 
 
 export default function Navbar({ onNavigate, username, fullName }) {
   const [activeButton, setActiveButton] = useState(null);
   const menuRef = useRef(null);
+  const router = useRouter(); 
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -21,6 +23,12 @@ export default function Navbar({ onNavigate, username, fullName }) {
 
   const handleHamburgerClick = (buttonName) => {
     setActiveButton(activeButton === buttonName ? null : buttonName);
+  };
+
+  // Function to handle sign out
+   const handleSignOut = () => {
+    router.push("/user/signin"); 
+    setActiveButton(null);
   };
 
   return (
@@ -105,12 +113,9 @@ export default function Navbar({ onNavigate, username, fullName }) {
             <hr />
 
             <li>
-              <button
+            <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={() => {
-                  onNavigate("signout");
-                  setActiveButton(null);
-                }}
+                onClick={handleSignOut} // Use handleSignOut function
               >
                 Sign Out
               </button>

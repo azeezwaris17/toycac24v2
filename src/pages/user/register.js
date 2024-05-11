@@ -43,6 +43,7 @@ export default function RegisterUser() {
     guardianName: "",
     guardianPhoneNumber: "",
     medicalCondition: "",
+    healthCondition: "",
     proofOfPayment: null,
     category: "",
   });
@@ -255,6 +256,7 @@ export default function RegisterUser() {
                 <option value="student">Student</option>
                 <option value="iotb">IOTB</option>
                 <option value="children">Children</option>
+                <option value="nonTimsanite">Non TIMSANITE</option>
               </select>
             </div>
           </div>
@@ -370,6 +372,27 @@ export default function RegisterUser() {
                     </div>
                   </div>
                 </>
+              )}
+
+{formData.category === "nonTimsanite" && (
+                <div className="mb-4">
+                  <label htmlFor="healthCondition" className="sr-only">
+                    What are you allergic to?
+                  </label>
+                  <div className="flex items-center">
+                    <BiSolidInstitution className="h-5 w-5 mr-2 text-[#DFBF76]" />
+                    <input
+                      type="text"
+                      id="healthCondition"
+                      name="healthCondition"
+                      placeholder="What are you allergic to"
+                      value={formData.healthCondition}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                </div>
               )}
 
               {/* Additional common fields */}

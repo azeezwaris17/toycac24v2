@@ -1,9 +1,18 @@
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { Button, Modal } from "flowbite-react";
 
 export default function Home() {
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    // Set openModal to true when component mounts
+    setOpenModal(true);
+  }, []);
+
   return (
     <div
       className="bg-cover bg-center min-h-screen"
@@ -13,9 +22,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero section */}
-      <section
-        className="fixed py-16"
-      >
+      <section className="fixed py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-rows-2 lg:grid-cols-12">
             {/* Left content */}
@@ -60,6 +67,37 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Modal */}
+      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header><div className="p-4 space-y-6"><p>Welcome to TOYCAC&apos;24!!!</p></div></Modal.Header>
+        <Modal.Body>
+          <div className="p-4 space-y-6">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              We are excited to have you here! Before you proceed with the
+              registration, please be informed that you need to provide your
+              evidence of payment.
+            </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              If you are yet to pay, kindly do so the following account details and come
+              back to start your registration.
+            </p>
+
+            <ul className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <li><span className="text-[#647862] font-bold">Account Name:</span> BELLO ISMAHEEL</li>
+              <li><span className="text-[#647862] font-bold">Account Number:</span> 0232160832</li>
+              <li><span className="text-[#647862] font-bold">Bank:</span> GUARANTY TRUST BANK</li>
+            </ul>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+        <div className="p-4 space-y-6">
+          <Button color="gray" onClick={() => setOpenModal(false)}>
+            OK
+          </Button>
+          </div>
+        </Modal.Footer>
+      </Modal>
 
       {/* Footer */}
       <Footer />

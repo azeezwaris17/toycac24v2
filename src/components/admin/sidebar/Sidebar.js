@@ -1,8 +1,10 @@
 import React from "react";
 import { MdApps, MdExitToApp } from "react-icons/md";
 import { TiUser } from "react-icons/ti";
+import { useRouter } from "next/router";
 
 export default function Sidebar({ onNavigate, activeComponent }) {
+  const router = useRouter();
   const menuItem = (label, icon, onClick, isActive) => (
     <li>
       <button
@@ -17,6 +19,11 @@ export default function Sidebar({ onNavigate, activeComponent }) {
       </button>
     </li>
   );
+
+  // Function to handle signout
+  const handleSignout = () => {
+    router.push("/admin/signin"); // Route to user/signin page
+  };
 
   return (
     <aside
@@ -42,11 +49,11 @@ export default function Sidebar({ onNavigate, activeComponent }) {
 
       <hr />
       <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
-        {menuItem(
+      {menuItem(
           "Signout",
           <MdExitToApp className="w-6 h-6 text-gray-800 dark:text-white" />,
-          () => onNavigate("signout"),
-          activeComponent === "signout"
+          handleSignout, 
+          
         )}
       </ul>
       {/* </div> */}

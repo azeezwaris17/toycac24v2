@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   guardianName: { type: String },
   guardianPhoneNumber: { type: String },
   medicalCondition: { type: String, default: "" },
+  healthCondition: { type: String, default: "" },
   proofOfPayment: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["user", "admin"], default: "user" },
@@ -33,7 +34,7 @@ userSchema.pre("validate", function (next) {
     this.guardianName = undefined;
     this.guardianPhoneNumber = undefined;
   } else if (this.category === "iotb") {
-    // If category is IOTB, require yearOfGraduation, remove other fields' requirement
+    // If category is IOTB, require yearOfGraduation and institution, remove other fields' requirement
     if (!this.yearOfGraduation) {
       this.invalidate(
         "yearOfGraduation",
@@ -65,6 +66,21 @@ userSchema.pre("validate", function (next) {
     }
     this.institution = undefined;
     this.yearOfGraduation = undefined;
+  }
+
+  else if (this.category === "nonTimsanite") { // New category
+    // Additional fields required for Non-Timsanites category
+    if (!this.healthCondition) {
+      this.invalidate(
+        "healthCondition",
+        "Kindly specify what you're allergic to"
+      );
+    }
+    // Other fields for Non-Timsanites category validation can be added here
+    this.institution = undefined;
+    this.yearOfGraduation = undefined;
+    this.guardianName = undefined;
+    this.guardianPhoneNumber = undefined;
   }
   next();
 });

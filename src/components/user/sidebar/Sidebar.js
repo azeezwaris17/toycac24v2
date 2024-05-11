@@ -1,7 +1,10 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { MdApps, MdExitToApp } from "react-icons/md";
 
 export default function Sidebar({ onNavigate, activeComponent }) {
+  const router = useRouter();
+
   const menuItem = (label, icon, onClick, isActive) => (
     <li>
       <button
@@ -16,6 +19,11 @@ export default function Sidebar({ onNavigate, activeComponent }) {
       </button>
     </li>
   );
+
+  // Function to handle signout
+  const handleSignout = () => {
+    router.push("/user/signin"); // Route to user/signin page
+  };
 
   return (
     <aside
@@ -45,8 +53,8 @@ export default function Sidebar({ onNavigate, activeComponent }) {
         {menuItem(
           "Signout",
           <MdExitToApp className="w-6 h-6 text-gray-800 dark:text-white" />,
-          () => onNavigate("signout"),
-          activeComponent === "signout"
+          handleSignout, 
+          
         )}
       </ul>
     </aside>

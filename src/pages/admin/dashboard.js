@@ -8,32 +8,45 @@ import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const [activeComponent, setActiveComponent] = useState("dashboard");
+  const [activeComponent, setActiveComponent] = useState("registeredUsers");
   const admin = useSelector((state) => state.adminSigninAuth.admin);
   const router = useRouter();
   const [userData, setUserData] = useState({ username: "", role: "" });
 
   useEffect(() => {
-    const currentPath = router.pathname;
-    if (currentPath === "/admin") {
-      window.history.replaceState({}, document.title, "/admin/dashboard");
-    }
-    if (currentPath === "/admin/dashboard") {
-      setActiveComponent("dashboard");
-    }
-
-    if (!admin && currentPath === "/admin/dashboard") {
+    // Redirect to sign-in if user data is not available
+    if (!admin || !admin.success) {
       router.push("/admin/signin");
-    }
-
-    if (admin) {
-      console.log(admin);
+    } else {
+      const { uniqueID, role } = admin.data;
       setUserData({
-        username: admin.data.uniqueID,
-        role: admin.data.role,
-      });
+              username: uniqueID,
+              role: role,
+            });
     }
   }, [admin, router]);
+
+  // useEffect(() => {
+  //   const currentPath = router.pathname;
+  //   if (currentPath === "/admin") {
+  //     window.history.replaceState({}, document.title, "/admin/dashboard");
+  //   }
+  //   if (currentPath === "/admin/dashboard") {
+  //     setActiveComponent("dashboard");
+  //   }
+
+  //   if (!admin && currentPath === "/admin/dashboard") {
+  //     router.push("/admin/signin");
+  //   }
+
+  //   if (admin) {
+  //     console.log(admin);
+  //     setUserData({
+  //       username: admin.data.uniqueID,
+  //       role: admin.data.role,
+  //     });
+  //   }
+  // }, [admin, router]);
 
   const handleNavigate = (path) => {
     const newPath =
@@ -57,6 +70,12 @@ const Dashboard = () => {
         return null;
     }
   };
+
+  // Render loading state if user data is not available yet
+  if (!admin || !admin.success) {
+    return <div className="min-h-screen flex items-center justify-center animate-bounce">Loading...</div>;
+  }
+
 
   return (
     <Layout

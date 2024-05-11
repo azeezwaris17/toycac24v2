@@ -72,7 +72,7 @@ export default function SigninUser() {
         // Handle status code errors if present
         if (response.payload && response.payload.error) {
           const { status, data } = response.payload.error;
-          console.log("Status:", status); // Log status here
+          // console.log("Status:", status); // Log status here
           if (status === 404) {
             toast.error(data && data.message ? data.message : "User not found");
             // setError(errorMessage);
@@ -241,10 +241,7 @@ export default function SigninUser() {
         </Modal.Body>
       </Modal>
 
-      {/* Error modal */}
-      {/* <Modal show={!!error} onClose={() => setError("")} title="Error">
-        {error}
-      </Modal> */}
+
     </div>
   );
 }

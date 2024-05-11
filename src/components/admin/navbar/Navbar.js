@@ -79,7 +79,7 @@ export default function Navbar({ onNavigate, username }) {
           className="absolute top-8 z-40 px-4 right-0 rounded-md py-8 w-full mt-4 md:hidden bg-white"
         >
           <ul className="flex flex-col font-medium">
-            <li>
+            {/* <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
                 onClick={() => {
@@ -89,7 +89,7 @@ export default function Navbar({ onNavigate, username }) {
               >
                 Dashboard
               </button>
-            </li>
+            </li> */}
             <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"

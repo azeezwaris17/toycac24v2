@@ -5,12 +5,12 @@ import Footer from "../footer/Footer";
 const Layout = ({
   children,
   setActiveComponent,
-  adminData,
+  userData,
 }) => {
   const handleNavigate = (path) => {
     // Your handleNavigate logic
     const newPath =
-      path === "dashboard" ? "/super_admin/registered_users" : `/super_admin/${path}`;
+      path === "camp_rules" ? "/user/dashboard" : `/user/${path}`;
     window.history.replaceState({}, document.title, newPath);
     setActiveComponent(path);
   };
@@ -20,8 +20,7 @@ const Layout = ({
       <header className="border-b">
         <Navbar
           onNavigate={handleNavigate}
-          username={adminData.username}
-          role={adminData.role}
+          fullName={userData.fullName}
         />
       </header>
 

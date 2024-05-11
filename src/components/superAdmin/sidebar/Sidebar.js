@@ -25,12 +25,12 @@ export default function Sidebar({ onNavigate, activeComponent }) {
       id="drawer-navigation"
     >
       <ul className="space-y-6">
-        {menuItem(
+        {/* {menuItem(
           "Dashboard",
           <MdApps className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,
           () => onNavigate("dashboard"),
           activeComponent === "dashboard"
-        )}
+        )} */}
         {menuItem(
           "Registered users",
           <TiUser className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,

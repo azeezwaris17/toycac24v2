@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-// import Notification from "../notification/Notification";
 
-export default function Navbar({ onNavigate, username }) {
+export default function Navbar({ onNavigate, username, fullName }) {
   const [activeButton, setActiveButton] = useState(null);
   const menuRef = useRef(null);
 
@@ -47,8 +46,6 @@ export default function Navbar({ onNavigate, username }) {
         </span>
       </div>
 
-      {/* Notification component */}
-      {/* <Notification /> */}
 
       {/* Hamburger menu button */}
       <div className="block lg:hidden">
@@ -79,21 +76,21 @@ export default function Navbar({ onNavigate, username }) {
           className="absolute top-8 z-40 px-4 right-0 rounded-md py-8 w-full mt-4 md:hidden bg-white"
         >
           <hr />
-          <p>Hi! {username}</p>
+          <p>Hi! {fullName}</p>
 
           <ul className="flex flex-col font-medium">
-            {/* <li>
+            <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
                 onClick={() => {
-                  onNavigate("dashboard");
+                  onNavigate("camp_rules");
                   setActiveButton(null);
                 }}
               >
-                Dashboard
+                Camp rules
               </button>
-            </li> */}
-            <li>
+            </li>
+            {/* <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
                 onClick={() => {
@@ -103,19 +100,7 @@ export default function Navbar({ onNavigate, username }) {
               >
                 Registered Users
               </button>
-            </li>
-
-            <li>
-              <button
-                className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={() => {
-                  onNavigate("registeredAdmins");
-                  setActiveButton(null);
-                }}
-              >
-                Registered Admins
-              </button>
-            </li>
+            </li> */}
 
             <hr />
 

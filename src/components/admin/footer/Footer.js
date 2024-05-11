@@ -7,7 +7,7 @@ export default function Footer() {
 
   return (
     <footer className="fixed bottom-0 left-0 z-20 w-full bg-transparent">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-center sm:mx-auto p-2 my-3 rounded-md">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-center  sm:mx-auto p-2 my-3 rounded-md">
         {/*toaster  */}
         <div className="">
           <Toaster position="bottom-center" reverseOrder={false}></Toaster>

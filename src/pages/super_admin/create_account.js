@@ -337,28 +337,7 @@ export default function RegisterUser() {
         </Modal.Body>
       </Modal>
 
-      {/* <Modal
-        show={showSuccessModal}
-        onClose={() => setShowSuccessModal(false)}
-        title="Success"
-      >
-        <div className="flex flex-col items-center">
-          <p>
-            Congratulations {userRegisteredData.fullName}, your account has been
-            created successfully.
-          </p>
-          <p>
-            Proceed to signin with your unique ID: {userRegisteredData.uniqueID}{" "}
-            as your username and your registered password as password.
-          </p>
-          <p>Proceeding you to signin...</p>
-        </div>
-      </Modal> */}
-
-      {/* Error modal */}
-      {/* <Modal show={!!error} onClose={() => setError("")} title="Error">
-        <div className="flex flex-col items-center">{error}</div>
-      </Modal> */}
+     
     </div>
   );
 }

@@ -104,7 +104,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
     }
   };
 
-  const buttonText = proofOfPaymentDisplayed ? "Hide" : "View";
+  const buttonText = proofOfPaymentDisplayed ? 'Hide' : 'View';
 
   const handleHideProofOfPayment = () => {
     setShowProofOfPayment(false);
@@ -130,10 +130,10 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
             <p>Full Name: {user.fullName}</p>
             <p>Email: {user.email}</p>
             <p>Category: {user.category}</p>
-            <p>Registration Status: {user.approved ? "Approved" : "Pending"}</p>
+            <p>Registration Status: {user.approved ? 'Approved' : 'Pending'}</p>
             <div className="flex flex-row items-center gap-2">
               <p>
-                Proof:{" "}
+                Proof: {' '}
                 <span className="text-[12px] md:text-md">
                   {user.proofOfPayment}
                 </span>

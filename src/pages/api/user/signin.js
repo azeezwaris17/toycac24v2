@@ -1,8 +1,8 @@
 const express = require("express");
 const connectDB = require("../mongodb");
 const UserAccountRegistration = require("../../../models/user/create_user_account");
-
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken"); // Import the jsonwebtoken package
 
 const app = express();
 app.use(express.json());
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       }
 
       // Generate JWT token
-      const token = user.generateAuthToken();
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET); // Use jwt.sign() to generate the token
 
       // Include user data in response
       const { uniqueID, fullName, email, phoneNumber, role, approved } = user;

@@ -1,6 +1,5 @@
 import React from "react";
 import { MdApps, MdExitToApp } from "react-icons/md";
-import { TiUser } from "react-icons/ti";
 
 export default function Sidebar({ onNavigate, activeComponent }) {
   const menuItem = (label, icon, onClick, isActive) => (
@@ -24,23 +23,24 @@ export default function Sidebar({ onNavigate, activeComponent }) {
       aria-label="Sidenav"
       id="drawer-navigation"
     >
-      {/* <div className="w-full pt-8 pb-20 px-3 h-full bg-white dark:bg-gray-800"> */}
       <ul className="space-y-6">
-        {/* {menuItem(
-          "Dashboard",
-          <MdApps className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,
-          () => onNavigate("dashboard"),
-          activeComponent === "dashboard"
-        )} */}
         {menuItem(
+          "Camp Rules",
+          <MdApps className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,
+          () => onNavigate("camp_rules"),
+          activeComponent === "camp_rules"
+        )}
+        {/* {menuItem(
           "Registered users",
           <TiUser className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,
           () => onNavigate("registeredUsers"),
           activeComponent === "registeredUsers"
-        )}
+        )} */}
+
       </ul>
 
       <hr />
+
       <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
         {menuItem(
           "Signout",
@@ -49,7 +49,6 @@ export default function Sidebar({ onNavigate, activeComponent }) {
           activeComponent === "signout"
         )}
       </ul>
-      {/* </div> */}
     </aside>
   );
 }

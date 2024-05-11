@@ -9,20 +9,20 @@ import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const [activeComponent, setActiveComponent] = useState("dashboard");
+  const [activeComponent, setActiveComponent] = useState("registeredUsers");
   const superAdmin = useSelector(
     (state) => state.superAdminSigninAuth.superAdmin
   );
-  // console.log(superAdmin);
   const router = useRouter();
   const [adminData, setAdminData] = useState({ username: "", role: "" });
 
   useEffect(() => {
-    if (superAdmin && superAdmin.success) {
+    // Redirect to sign-in if user data is not available
+    if (!superAdmin || !superAdmin.success) {
+      router.push("/super_admin/signin");
+    } else {
       const { uniqueID, role } = superAdmin.data;
       setAdminData({ username: uniqueID, role });
-    } else {
-      router.push("/super_admin/signin");
     }
   }, [superAdmin, router]);
 
@@ -44,12 +44,18 @@ const Dashboard = () => {
         );
       case "registeredUsers":
         return <RegisteredUsersComponent />;
+
       case "registeredAdmins":
         return <RegisteredAdminsComponent />;
       default:
         return null;
     }
   };
+
+  // Render loading state if user data is not available yet
+  if (!superAdmin || !superAdmin.success) {
+    return <div className="min-h-screen flex items-center justify-center animate-bounce">Loading...</div>;
+  }
 
   return (
     <Layout

@@ -115,6 +115,7 @@ export default async function handler(req, res) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
       const categoryID = getCategoryID(category);
+      const participantID = generateParticipantID();
 
       // Fetch the last user from the database to extract the counter
       const lastUser = await UserAccountRegistration.findOne({}, {}, { sort: { 'uniqueID': -1 } });
@@ -135,7 +136,7 @@ export default async function handler(req, res) {
       const paddedCounter = counter.toString().padStart(3, '0');
 
       // Generate the new uniqueID
-      const uniqueID = `TOYCAC24-${categoryID}-${paddedCounter}`;
+      const uniqueID = `TOYCAC24-${categoryID}-${participantID}${paddedCounter}`;
 
       const userData = new UserAccountRegistration({
         fullName: req.body.fullName,
@@ -250,6 +251,26 @@ function getCategoryID(category) {
     default:
       return "OTH";
   }
+}
+
+// Define the initial house abbreviation index
+let houseAbbreviationIndex = 0;
+
+// Function to generate participant ID based on cyclic pattern
+function generateParticipantID() {
+  // Define the house abbreviations in the desired order
+  const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"];
+  
+  // Get the current house abbreviation based on the index
+  const currentAbbreviation = houseAbbreviations[houseAbbreviationIndex];
+  
+  // Generate the participant ID using the current abbreviation and counter
+  const participantID = `${currentAbbreviation}`;
+
+  // Increment the house abbreviation index
+  houseAbbreviationIndex = (houseAbbreviationIndex + 1) % houseAbbreviations.length;
+
+  return participantID;
 }
 
 async function sendEmail(email, fullName, uniqueID) {

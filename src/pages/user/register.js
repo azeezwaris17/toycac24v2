@@ -20,6 +20,7 @@ import { MdCategory } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { validateRegistrationFormData } from "../../utils/user/registrationFormValidation";
 import { registerUserAccount } from "../../redux/user/userRegistrationAuthSlice";
+// import { setRequestConfig  } from "../../redux/user/userRegistrationAuthSlice";
 import { Modal } from "flowbite-react";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
@@ -79,6 +80,8 @@ export default function RegisterUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Log HTTP request method
+    console.log("HTTP Request Method:", e.target.method);
     if (!validateRegistrationFormData(formData)) {
       toast.error("Please fill in all fields correctly.");
       return;
@@ -93,7 +96,12 @@ export default function RegisterUser() {
     let userUniqueID = ""; // Define uniqueID outside the try block
     try {
       setLoading(true);
-      const response = await dispatch(registerUserAccount(formDataToSend));
+
+
+      // Dispatch the registerUserAccount async thunk with requestConfig
+// Dispatch the registerUserAccount async thunk with formDataToSend and requestConfig
+const requestConfig = { method: "POST" }; // Define requestConfig here
+const response = await dispatch(registerUserAccount({ formDataToSend, requestConfig }));
       console.log("Response:", response);
       if (
         response.payload &&
@@ -112,7 +120,7 @@ export default function RegisterUser() {
       }
     } catch (error) {
       console.error("Registration error:", error);
-      toast.error("Failed to create super admin account.");
+      toast.error("Failed to create user account.");
     } finally {
       setLoading(false); // Set loading to false after request completes
     }
@@ -152,7 +160,9 @@ export default function RegisterUser() {
 
         <form
           onSubmit={handleSubmit}
+          method="POST"
           className="w-full max-w-sm p-4 bg-white rounded-xl"
+          
         >
           {/* full name */}
           <div className="mb-4">
@@ -513,6 +523,9 @@ export default function RegisterUser() {
             </button>
           </div>
 
+          </form>
+          
+          <div>
           <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-2">
             Already have an account?{" "}
             <Link
@@ -522,7 +535,8 @@ export default function RegisterUser() {
               Signin
             </Link>
           </p>
-        </form>
+          </div>
+      
 
         <div className="mt-4">
           <p className="italic ">Igniting Hearts, Transcending Boundaries</p>

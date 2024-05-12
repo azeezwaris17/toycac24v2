@@ -159,13 +159,7 @@ export default async function handler(req, res) {
       // Append data to Google Sheet
       await appendToSheet(userData);
 
-      // Create a folder structure based on the registration date
-      const registrationDate = new Date();
-      const year = registrationDate.getFullYear();
-      const month = (registrationDate.getMonth() + 1)
-        .toString()
-        .padStart(2, "0");
-      const day = registrationDate.getDate().toString().padStart(2, "0");
+      // Create a folder 
       const folderPath = `public/uploads/proofOfPayment`;
 
       // Ensure the target directory exists

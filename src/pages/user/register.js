@@ -108,7 +108,6 @@ export default function RegisterUser() {
           router.push(
             `/user/signin?uniqueID=${encodeURIComponent(userUniqueID)}`
           );
-          // router.push("/user/signin");
         }, 5000); // Redirect to signin page after 2 seconds
       }
     } catch (error) {

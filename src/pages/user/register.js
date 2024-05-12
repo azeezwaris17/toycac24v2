@@ -93,14 +93,16 @@ export default function RegisterUser() {
       formDataToSend.append(key, formData[key]);
     }
 
+    console.log(formDataToSend)
+
     let userUniqueID = ""; // Define uniqueID outside the try block
     try {
       setLoading(true);
 
 
-      // Dispatch the registerUserAccount async thunk with requestConfig
-// Dispatch the registerUserAccount async thunk with formDataToSend and requestConfig
+
 const requestConfig = { method: "POST" }; // Define requestConfig here
+      // Dispatch the registerUserAccount async thunk with requestConfig
 const response = await dispatch(registerUserAccount({ formDataToSend, requestConfig }));
       console.log("Response:", response);
       if (

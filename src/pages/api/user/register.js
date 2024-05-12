@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import { google } from 'googleapis';
 
-const upload = multer({ dest: "public/uploads/proofOfPayment" });
+const upload = multer({ dest: "uploads/proofOfPayment" });
 
 connectDB();
 
@@ -53,6 +53,14 @@ export default async function handler(req, res) {
 
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      // Check if the proof of payment file already exists
+      const existingProof = await UserAccountRegistration.findOne({ proofOfPayment: req.file.filename });
+      if (existingProof) {
+        // If the proof of payment already exists, send an error response to the user
+        fs.unlinkSync(`uploads/proofOfPayment/${req.file.filename}`);
+        return res.status(400).json({ message: "Proof of payment has been used, try another one" });
       }
 
       // Check if the email already exists
@@ -105,7 +113,7 @@ export default async function handler(req, res) {
       }
 
       if (additionalFieldsRequired) {
-        fs.unlinkSync("public/uploads/proofOfPayment/" + req.file.filename);
+        fs.unlinkSync("uploads/proofOfPayment/" + req.file.filename);
         return res.status(400).json({
           message:
             "Additional fields are required based on the selected category",
@@ -161,7 +169,7 @@ export default async function handler(req, res) {
       await appendToSheet(userData);
 
       // Create a folder 
-      const folderPath = `public/uploads/proofOfPayment`;
+      const folderPath = `uploads/proof_of_payments`;
 
       // Ensure the target directory exists
       fs.mkdir(folderPath, { recursive: true }, (err) => {
@@ -170,7 +178,7 @@ export default async function handler(req, res) {
           return res.status(500).json({ message: "Error creating directory" });
         } else {
           // Move the uploaded file to the target directory
-          const oldPath = `public/uploads/proofOfPayment/${req.file.filename}`;
+          const oldPath = `uploads/proofOfPayment/${req.file.filename}`;
           const newPath = `${folderPath}/${req.file.filename}`;
           fs.rename(oldPath, newPath, (err) => {
             if (err) {
@@ -180,7 +188,7 @@ export default async function handler(req, res) {
               console.log("File moved successfully");
 
               // Construct the imageUrl relative to the public directory
-              const imageUrl = `/uploads/proofOfPayment/${req.file.filename}`;
+              const imageUrl = `uploads/proof_of_payments/${req.file.filename}`;
               console.log(imageUrl);
 
               res.status(201).json({
@@ -190,7 +198,7 @@ export default async function handler(req, res) {
                 imageUrl, // Include the URL in the response
               });
 
-              sendEmail(req.body.email, req.body.fullName, uniqueID);
+              // sendEmail(req.body.email, req.body.fullName, uniqueID);
             }
           });
         }

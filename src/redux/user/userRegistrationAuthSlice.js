@@ -6,21 +6,14 @@ const initialState = {
   user: null, // Holds user data once registered
   loading: false, // Indicates if API request is in progress
   error: null, // Holds error message if API request fails
-  // requestConfig: {
-  //   method: "POST", // Default HTTP method
-  //   // Add any other default properties you need
-  // },
+
 };
 
-// export const setRequestConfig = createAction('auth/setRequestConfig', (config) => ({
-//   payload: config,
-// }));
 
 export const registerUserAccount = createAsyncThunk(
   "auth/registerUserAccount",
   async ({ formDataToSend, requestConfig }) => {
-    // const { method } = getState().auth.requestConfig || { method: "POST" };
-    // console.log("Request method:", method);
+
     try {
       const response = await axios.request({
         url: "/api/user/register",
@@ -48,15 +41,7 @@ const userRegistrationAuthSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    // .addCase(setRequestConfig, (state, action) => {
-    //   state.loading = false;
-    //   if (action.payload.success) {
-    //     state.requestConfig = action.payload;
-    //   } else {
-    //     state.error = action.payload.error;
-    //   }
-     
-    // })
+
       .addCase(registerUserAccount.pending, (state) => {
         state.loading = true;
         state.error = null;

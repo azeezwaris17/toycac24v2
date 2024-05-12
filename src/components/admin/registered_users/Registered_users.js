@@ -118,8 +118,10 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
   const [showProofOfPayment, setShowProofOfPayment] = useState(false);
   const [proofOfPaymentDisplayed, setProofOfPaymentDisplayed] = useState(false);
 
+
   // Constructing the URL for the proof of payment image
-  const imageUrl = `/uploads/proofOfPayment/${user.proofOfPayment}`;
+  const imageUrl = `/uploads/proof_of_payments/${user.proofOfPayment}`;
+  console.log(imageUrl)
 
   const handleProofOfPaymentClick = () => {
     setShowProofOfPayment(!showProofOfPayment);

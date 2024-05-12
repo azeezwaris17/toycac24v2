@@ -153,7 +153,10 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
           <div className="px-4 py-6">
             <p>Full Name: {user.fullName}</p>
             <p>Email: {user.email}</p>
+            <p>Phone number: {user.phoneNumber}</p>
             <p>Category: {user.category}</p>
+            <p>Institution: {user.institution}</p>
+            <p>Medical condition: {user.medicalCondition}</p>
             <p>Registration Status: {user.approved ? "Approved" : "Pending"}</p>
             <div className="flex flex-row items-center gap-2">
               <p>

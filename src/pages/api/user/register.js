@@ -42,6 +42,7 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  if (req.method === "POST") {
   try {
     upload.single("proofOfPayment")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
@@ -203,6 +204,8 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Registration failed" });
+  } } else {
+    res.status(405).json({ message: "Method Not Allowed" });
   }
 }
 

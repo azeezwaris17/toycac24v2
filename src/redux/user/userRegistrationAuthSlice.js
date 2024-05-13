@@ -13,6 +13,7 @@ const initialState = {
 export const registerUserAccount = createAsyncThunk(
   "auth/registerUserAccount",
   async ({ formDataToSend, requestConfig }) => {
+    console.log(formDataToSend)
 
     try {
       const response = await axios.request({
@@ -21,10 +22,13 @@ export const registerUserAccount = createAsyncThunk(
         data: formDataToSend,
       });
       return response.data;
+      console.log("Response:", response.data)
     } catch (error) {
       if (error.response) {
+        console.log(error.response)
         const { status, data } = error.response;
         return { success: false, error: { status, data } };
+        console.log (error.response)
       } else {
         return {
           success: false,

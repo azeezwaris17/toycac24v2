@@ -122,6 +122,7 @@ const response = await dispatch(registerUserAccount({ formDataToSend, requestCon
       }
     } catch (error) {
       console.error("Registration error:", error);
+      console.log("Registration error:", error)
       toast.error("Failed to create user account.");
     } finally {
       setLoading(false); // Set loading to false after request completes

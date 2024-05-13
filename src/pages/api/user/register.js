@@ -6,6 +6,9 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import { google } from 'googleapis';
 
+const app = express();
+app.use(express.json());
+
 const upload = multer({ dest: "uploads/proofOfPayment" });
 
 connectDB();
@@ -35,14 +38,13 @@ const auth = new google.auth.GoogleAuth({
 // Create a new instance of Google Sheets API
 const sheets = google.sheets({ version: 'v4', auth });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
   try {
     upload.single("proofOfPayment")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
@@ -207,8 +209,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Registration failed" });
-  } } else {
-    res.status(405).json({ message: "Method Not Allowed" });
   }
 }
 

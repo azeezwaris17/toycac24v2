@@ -2,6 +2,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userRegistrationAuthReducer from "./user/userRegistrationAuthSlice";
 import userSigninAuthReducer from "./user/userSigninAuthSlice";
+import userCreateAccountAuthReducer from "./user/UserCreateAccount"
+
+
+
 import superAdminRegistrationAuthReducer from "./super_admin/superAdminRegistrationAuthSlice";
 import superAdminSigninAuthReducer from "./super_admin/superAdminSigninAuthSlice";
 import adminRegistrationAuthReducer from "./admin/adminRegistrationAuthSlice";
@@ -26,6 +30,7 @@ export default configureStore({
     // name of slice: name of reducer
     userRegistrationAuth: userRegistrationAuthReducer,
     userSigninAuth: userSigninAuthReducer,
+    userCreateAccountAuth: userCreateAccountAuthReducer,
 
     adminRegistrationAuth: adminRegistrationAuthReducer,
     adminSigninAuth: adminSigninAuthReducer,

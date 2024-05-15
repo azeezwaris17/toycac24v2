@@ -14,6 +14,7 @@ const Dashboard = () => {
     fullName: "",
     email: "",
     username: "",
+    proofofPayment: "",
   });
 
   useEffect(() => {
@@ -21,8 +22,13 @@ const Dashboard = () => {
     if (!user || !user.success) {
       router.push("/user/signin");
     } else {
-      const { fullName, email, uniqueID } = user.data;
-      setUserData({ fullName: fullName, email: email, username: uniqueID });
+      const { fullName, email, uniqueID, proofofPayment } = user.data;
+      setUserData({
+        fullName: fullName,
+        email: email,
+        username: uniqueID,
+        proof_of_payment: proofofPayment,
+      });
     }
   }, [user, router]);
 
@@ -43,7 +49,11 @@ const Dashboard = () => {
 
   // Render loading state if user data is not available yet
   if (!user || !user.success) {
-    return <div className="min-h-screen flex items-center justify-center animate-bounce">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center animate-bounce">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -58,7 +68,10 @@ const Dashboard = () => {
         <div className="flex flex-col lg:flex-row gap-4 mb-4">
           {/* Sidebar */}
           <div className="lg:w-64">
-            <Sidebar onNavigate={handleNavigate} activeComponent={activeComponent} />
+            <Sidebar
+              onNavigate={handleNavigate}
+              activeComponent={activeComponent}
+            />
           </div>
 
           {/* Main Content */}

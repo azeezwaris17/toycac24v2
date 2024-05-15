@@ -26,6 +26,10 @@ export default async function handler(req, res) {
           .json({ success: false, message: "Invalid username or password" });
       }
 
+      // if (user) {
+      //   console.log(user);
+      // }
+
       // Check if user account is approved
       if (!user.approved) {
         return res.status(403).json({
@@ -44,16 +48,34 @@ export default async function handler(req, res) {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET); // Use jwt.sign() to generate the token
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET); //
+
+      // console.log("This is your signin token:", token);
 
       // Include user data in response
-      const { uniqueID, fullName, email, phoneNumber, role, approved } = user;
+      const {
+        uniqueID,
+        fullName,
+        email,
+        phoneNumber,
+        role,
+        approved,
+        proofOfPayment,
+      } = user;
 
       res.status(200).json({
         success: true,
         message: "User login successful",
         token,
-        data: { uniqueID, fullName, email, phoneNumber, role, approved },
+        data: {
+          uniqueID,
+          fullName,
+          email,
+          phoneNumber,
+          role,
+          approved,
+          proofOfPayment,
+        },
       });
     } catch (error) {
       console.error("Error logging in user:", error.message);

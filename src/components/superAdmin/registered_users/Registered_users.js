@@ -17,6 +17,11 @@ import Image from "next/image";
 import { saveAs } from "file-saver";
 import ExcelJS from "exceljs";
 import * as XLSX from "xlsx";
+import Link from "next/link";
+
+export const config = {
+  runtime: "experimental-edge",
+};
 
 const RegisteredUsersTable = ({ users, openUserDetailsModal }) => {
   return (
@@ -35,14 +40,14 @@ const RegisteredUsersTable = ({ users, openUserDetailsModal }) => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-             Email
+              Email
             </th>
 
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-            Username
+              Username
             </th>
             <th
               scope="col"
@@ -116,7 +121,9 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
   const [proofOfPaymentDisplayed, setProofOfPaymentDisplayed] = useState(false);
 
   // Constructing the URL for the proof of payment image
-  const imageUrl = `/uploads/proofOfPayment/${user.proofOfPayment}`;
+  // const proof_of_payment = user.proofOfPayment;
+
+  // console.log(proof_of_payment);
 
   const handleProofOfPaymentClick = () => {
     setShowProofOfPayment(!showProofOfPayment);
@@ -125,7 +132,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
     }
   };
 
-  const buttonText = proofOfPaymentDisplayed ? 'Hide' : 'View';
+  const buttonText = proofOfPaymentDisplayed ? "Hide" : "View";
 
   const handleHideProofOfPayment = () => {
     setShowProofOfPayment(false);
@@ -148,40 +155,24 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
 
           {/* body */}
           <div className="px-4 py-6">
-          <p>Full Name: {user.fullName}</p>
+            <p>Full Name: {user.fullName}</p>
             <p>Email: {user.email}</p>
+            <p>Username: {user.uniqueID}</p>
             <p>Phone number: {user.phoneNumber}</p>
             <p>Category: {user.category}</p>
             <p>Institution: {user.institution}</p>
             <p>Medical condition: {user.medicalCondition}</p>
             <p>Registration Status: {user.approved ? "Approved" : "Pending"}</p>
             <div className="flex flex-row items-center gap-2">
-              <p>
-                Proof of Payment: {' '}
-                <span className="text-[12px] md:text-md">
-                  {user.proofOfPayment}
-                </span>
-              </p>
-              <button
-                onClick={handleProofOfPaymentClick}
-                className="text-green-500 hover:underline"
+              Proof of Payment:{" "}
+              <a
+                href={user.proofOfPayment}
+                target="_blank"
+                className="text-[12px] md:text-md"
               >
-                {buttonText}
-              </button>
+                {user.proofOfPayment}
+              </a>
             </div>
-
-            {/* Display proof of payment directly within the modal */}
-            {showProofOfPayment && (
-              <div className="mt-4">
-               <Image
-                  src={imageUrl}
-                  width={300}
-                  height={300}
-                  alt="Proof of Payment"
-                  className="max-w-full"
-                />
-              </div>
-            )}
 
             <div className="flex justify-end gap-4 mt-4">
               {user.approved === false && (
@@ -213,7 +204,6 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
     </div>
   );
 };
-
 
 export default function RegisteredUsersComponent() {
   // const users = useSelector((state) => state.adminApproveUserAccount.users);
@@ -299,6 +289,7 @@ export default function RegisteredUsersComponent() {
   const [selectedUser, setSelectedUser] = useState(null); // New state for selected user
   const itemsPerPage = 10;
 
+  // fetch users
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

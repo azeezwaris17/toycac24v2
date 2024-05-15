@@ -35,14 +35,14 @@ const RegisteredUsersTable = ({ users, openUserDetailsModal }) => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-             Email
+              Email
             </th>
 
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-            Username
+              Username
             </th>
 
             <th
@@ -118,10 +118,9 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
   const [showProofOfPayment, setShowProofOfPayment] = useState(false);
   const [proofOfPaymentDisplayed, setProofOfPaymentDisplayed] = useState(false);
 
-
   // Constructing the URL for the proof of payment image
   const imageUrl = `/uploads/proof_of_payments/${user.proofOfPayment}`;
-  console.log(imageUrl)
+  console.log(imageUrl);
 
   const handleProofOfPaymentClick = () => {
     setShowProofOfPayment(!showProofOfPayment);
@@ -155,6 +154,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
           <div className="px-4 py-6">
             <p>Full Name: {user.fullName}</p>
             <p>Email: {user.email}</p>
+            <p>Username: {user.uniqueID}</p>
             <p>Phone number: {user.phoneNumber}</p>
             <p>Category: {user.category}</p>
             <p>Institution: {user.institution}</p>
@@ -301,7 +301,6 @@ export default function RegisteredUsersComponent() {
   const [selectedUser, setSelectedUser] = useState(null); // New state for selected user
   const itemsPerPage = 10;
 
-
   // fetch users
   useEffect(() => {
     const fetchData = async () => {
@@ -380,7 +379,6 @@ export default function RegisteredUsersComponent() {
       }
     }
   };
-
 
   // filterin users
   const filteredUsers =

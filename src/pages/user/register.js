@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { upload } from "@vercel/blob/client";
+import { put } from "@vercel/blob";
+import { list } from "@vercel/blob";
+import { VercelBlobStore } from "@vercel/blob";
+// import { VercelBlobStore } from "@vercel/blob-store";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import {
@@ -19,12 +24,19 @@ import { TbBrandGuardian } from "react-icons/tb";
 import { MdCategory } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { validateRegistrationFormData } from "../../utils/user/registrationFormValidation";
-import { registerUserAccount } from "../../redux/user/userRegistrationAuthSlice";
+import { createUserAccount } from "../../redux/user/UserCreateAccount";
 // import { setRequestConfig  } from "../../redux/user/userRegistrationAuthSlice";
 import { Modal } from "flowbite-react";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
+
+// import dotenv from "dotenv";
+// dotenv.config();
+
+export const config = {
+  runtime: "experimental-edge",
+};
 
 export default function RegisterUser() {
   // Inside your functional component
@@ -45,10 +57,11 @@ export default function RegisterUser() {
     guardianPhoneNumber: "",
     medicalCondition: "",
     healthCondition: "",
-    proofOfPayment: null,
+    proofOfPayment: "",
     category: "",
   });
-
+  const inputFileRef = useRef(null);
+  const [blob, setBlob] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -62,10 +75,11 @@ export default function RegisterUser() {
   const [loading, setLoading] = useState(false); // State to track loading state
   const [error, setError] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  // const [userRegisteredData, setUserRegisteredData] = useState({
-  //   fullName: "",
-  //   uniqueID: "",
-  // });
+  const [userRegisteredData, setUserRegisteredData] = useState({
+    fullName: "",
+    email: "",
+    uniqueID: "",
+  });
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -80,52 +94,76 @@ export default function RegisterUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Log HTTP request method
-    console.log("HTTP Request Method:", e.target.method);
-    if (!validateRegistrationFormData(formData)) {
-      toast.error("Please fill in all fields correctly.");
-      return;
-    }
 
-    const formDataToSend = new FormData();
-    // Append all form data to FormData object
-    for (const key in formData) {
-      formDataToSend.append(key, formData[key]);
-    }
-
-    console.log(formDataToSend)
-
-    let userUniqueID = ""; // Define uniqueID outside the try block
     try {
       setLoading(true);
 
+      let newFormData;
 
+      try {
+        const file = inputFileRef.current.files[0];
+        // console.log("file uploaded", file);
+        const blob = await put(file.name, file, {
+          access: "public",
+          token:
+            "vercel_blob_rw_SM2Fkrx103yJkXil_2taarPG2lCNKYqscaz29vZXB7x3q7a",
+        });
+        await setBlob(blob);
+        // console.log("This is the blob:", blob);
 
-const requestConfig = { method: "POST" }; // Define requestConfig here
-      // Dispatch the registerUserAccount async thunk with requestConfig
-const response = await dispatch(registerUserAccount({ formDataToSend, requestConfig }));
-      console.log("Response:", response);
+        const { url, downloadUrl } = blob;
+
+        // Create a new object and update proofOfPayment directly
+        newFormData = { ...formData, proofOfPayment: url };
+        setFormData(newFormData);
+      } catch (error) {
+        if (error.message.includes("NetworkError")) {
+          // Handle network error
+          console.error("Network error occurred while uploading file");
+        } else if (error.message.includes("TokenError")) {
+          // Handle token error
+          console.error("Invalid or expired token");
+        } else {
+          // Handle general error
+          console.error("Error uploading file:", error);
+        }
+      }
+
+      const response = await dispatch(createUserAccount(newFormData));
+
+      // console.log("Response:", response);
+
       if (
         response.payload &&
         response.payload.message === "Registration successful"
       ) {
         setLoading(false);
-        userUniqueID = response.payload.uniqueID;
-        // const { fullName, uniqueID } = response.payload;
-        // setUserRegisteredData({ fullName, uniqueID });
+        const userUniqueID = response.payload.uniqueID;
         setShowSuccessModal(true);
         setTimeout(() => {
           router.push(
             `/user/signin?uniqueID=${encodeURIComponent(userUniqueID)}`
           );
-        }, 5000); // Redirect to signin page after 2 seconds
+        }, 5000);
+      } else {
+        if (response.payload && response.payload.error) {
+          const { status, data } = response.payload.error;
+          console.log("Status:", status);
+          if (status === 500) {
+            toast.error(
+              data && data.message ? data.message : "Server Error! Try again."
+            );
+          } else {
+            toast.error("Failed to create account.");
+          }
+        }
       }
     } catch (error) {
       console.error("Registration error:", error);
-      console.log("Registration error:", error)
+      setError("Failed to create user account."); // Set error state
       toast.error("Failed to create user account.");
     } finally {
-      setLoading(false); // Set loading to false after request completes
+      setLoading(false);
     }
   };
 
@@ -165,7 +203,7 @@ const response = await dispatch(registerUserAccount({ formDataToSend, requestCon
           onSubmit={handleSubmit}
           method="POST"
           className="w-full max-w-sm p-4 bg-white rounded-xl"
-          
+          encType="multipart/form-data"
         >
           {/* full name */}
           <div className="mb-4">
@@ -386,7 +424,7 @@ const response = await dispatch(registerUserAccount({ formDataToSend, requestCon
                 </>
               )}
 
-{formData.category === "nonTimsanite" && (
+              {formData.category === "nonTimsanite" && (
                 <div className="mb-4">
                   <label htmlFor="healthCondition" className="sr-only">
                     What are you allergic to?
@@ -439,7 +477,8 @@ const response = await dispatch(registerUserAccount({ formDataToSend, requestCon
                     type="file"
                     id="proofOfPayment"
                     name="proofOfPayment"
-                    onChange={handleInputChange}
+                    ref={inputFileRef}
+                    // onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
                   />
@@ -525,10 +564,9 @@ const response = await dispatch(registerUserAccount({ formDataToSend, requestCon
               ) : null}
             </button>
           </div>
+        </form>
 
-          </form>
-          
-          <div>
+        <div>
           <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-2">
             Already have an account?{" "}
             <Link
@@ -538,8 +576,7 @@ const response = await dispatch(registerUserAccount({ formDataToSend, requestCon
               Signin
             </Link>
           </p>
-          </div>
-      
+        </div>
 
         <div className="mt-4">
           <p className="italic ">Igniting Hearts, Transcending Boundaries</p>

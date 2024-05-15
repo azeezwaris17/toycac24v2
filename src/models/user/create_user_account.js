@@ -13,7 +13,10 @@ const userSchema = new mongoose.Schema({
   guardianPhoneNumber: { type: String },
   medicalCondition: { type: String, default: "" },
   healthCondition: { type: String, default: "" },
-  proofOfPayment: { type: String, required: true },
+  proofOfPayment: {
+    type: String,
+    required: true,
+  },
   password: { type: String, required: true },
   role: { type: String, enum: ["user", "admin"], default: "user" },
   uniqueID: { type: String, required: true },
@@ -66,9 +69,8 @@ userSchema.pre("validate", function (next) {
     }
     this.institution = undefined;
     this.yearOfGraduation = undefined;
-  }
-
-  else if (this.category === "nonTimsanite") { // New category
+  } else if (this.category === "nonTimsanite") {
+    // New category
     // Additional fields required for Non-Timsanites category
     if (!this.healthCondition) {
       this.invalidate(

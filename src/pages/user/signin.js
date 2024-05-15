@@ -66,6 +66,7 @@ export default function SigninUser() {
     try {
       setLoading(true);
       const response = await dispatch(signinUserAccount(formData));
+      console.log(response);
       if (response.payload && response.payload.success) {
         router.push("/user/dashboard"); // Navigate to the dashboard page
       } else {
@@ -240,8 +241,6 @@ export default function SigninUser() {
           </div>
         </Modal.Body>
       </Modal>
-
-
     </div>
   );
 }

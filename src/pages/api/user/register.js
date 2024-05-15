@@ -1,10 +1,11 @@
+import express from "express";
 import connectDB from "../mongodb";
 import UserAccountRegistration from "../../../models/user/create_user_account";
 import nodemailer from "nodemailer";
 import multer from "multer";
 import bcrypt from "bcrypt";
 import fs from "fs";
-import { google } from 'googleapis';
+import { google } from "googleapis";
 
 const app = express();
 app.use(express.json());
@@ -16,27 +17,29 @@ connectDB();
 // Load credentials from a JSON file
 // Define the service account credentials
 const credentials = {
-  "type": "service_account",
-  "project_id": "toycac24-419900",
-  "private_key_id": "b38cc9c45f42f7d6aa654f24eca5cd8360ce385f",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJJwMBTuk7eEsp\npadiFMcbXbN3MZUIRAk7XahgZQ9zfvIoMLDIqOu3THDaB1yLWWZ1nlrbjtyMjCiY\nPVVnR08tAWYTwB++ms8a2bKIUwh9TWyEoHpZS5fUZoe4WaoTumD0vfwtaUAPSR/d\nwsjJpjDOnx/uDXuouCVmHde80hLi0bu9Xd2Qoj+e9Z7Viez845WzV7seR48WxBmJ\n0CFLWhHrIKli+jee1LVO9xPv/Wbv0FAQvMeUOLt0Uvsyymeos0d5hv6KL9utpnpY\nXyWu4lbJsbzC0GfusAwgNm6YLmxi2R4RXf2enDXs/Kngk4PMfNVHQUvz68eFC0Tw\nHg/+EQ6JAgMBAAECggEAOaNnFgnhhPvsNavU8aLYhrvrv9zCQpMUPiGRLMXojoSy\nqNeC4IyetnA96guv9fIRDOTqTf16rv8+Zpk0jpp9Un0THdewgPJlI+F7adq5FQaJ\ncNt3E304rVEP1MBEntCKFbcWuoBtLbQbYHT/CeEIHTy1boYIiAj0FnW4qs9bQAis\n+rYsOJtsGL0+M86j+Xjyyy+AFOIwEbzEWtluC/6QQbQjoAuJVEl5ojlvPVJg+qPv\nA8M/co1fH+jKLnDtaIQPD+4KqZRtxZi0caN002IsDn3yTZXfM7FqvSXpRdtCnuUX\nQUVjsOeUNATUxMmmSMoS5bKXdg1psKP+6586BUZ2bQKBgQDnnARQGrX0XyY9owcF\nsyND/K/D+ReMqXw2docJouVhWZ7npq8X9xAHv5wigcn4Oz3QWdmK3Sd7g+EQ7Fr8\nG1ZM5gGg+Gxm8xDbDZmH4cQekWQ6uxtW5OFYKoCZrCpxfMyRdR9/hcAhV5n46hDS\n26K4U5+s/7Qz/rmQv1MwpbADIwKBgQDeVeZqX82Asvh+zk2FxmtRiNILZcYBeUCN\nNgX+81tREiKnWsefM3lm2oXE8CmO//kyAEe0N9cO33lX7gdTii42WpPgMuG99gA9\nT/sW4pNClcPynJGuHXFs3CQVZ9f3+q21KU1FO6VAAfrDC2OwwfPCdsRTko6wmf6p\nhZHFlkpIYwKBgE7LbUwzSiPRGxltFT6DK0Q9+y4Y2EIqhu+gc2B74r2z17PHqVnl\n27ZHIb87mJKy1NzFNJVhl8UVoMQ5JNsQEdQni/ZPjdGYb+uWPN1VmXssy4SPk0WE\nqIVuMEIXqHjjlFUIG6cuwaaWPvPH7eFOh5VeHbylYZEu38K21H6AX9kxAoGBANlB\nxy4a/4zLVddTcJ1QDn5V3CoXAS1fdpyGNcWzt3+44PP32SjP+8ltr1mJ9JIvvyoE\n7AxGpHd8F+68QZx4Yj/qsqVaEwy03fcLuKfcL1nZTug75n7ldniRhREFsBw5cJSe\nD0ufxRKO3KLK9lc6rx9PPvkLNTOMxzSPuKoC+gNRAoGAfw5n8V/Tplu1d5OpGuG5\n8g79vReqpBDgYwCi/WqIZkMxoiV+LFqu5tRa49uJjcbVhSONmTsX3RHRItxHvO1h\nHHwemB9PcgGngUgCy1UN/XqP2NzUYuNpExxcllX3wdSUIMTWWGKEYxvoZnve4ty+\nkjEj2uyloA+knsPIuR7vEKE=\n-----END PRIVATE KEY-----\n",
-  "client_email": "toycac@toycac24-419900.iam.gserviceaccount.com",
-  "client_id": "102162798731964732623",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/toycac%40toycac24-419900.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+  type: "service_account",
+  project_id: "toycac24-419900",
+  private_key_id: "b38cc9c45f42f7d6aa654f24eca5cd8360ce385f",
+  private_key:
+    "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJJwMBTuk7eEsp\npadiFMcbXbN3MZUIRAk7XahgZQ9zfvIoMLDIqOu3THDaB1yLWWZ1nlrbjtyMjCiY\nPVVnR08tAWYTwB++ms8a2bKIUwh9TWyEoHpZS5fUZoe4WaoTumD0vfwtaUAPSR/d\nwsjJpjDOnx/uDXuouCVmHde80hLi0bu9Xd2Qoj+e9Z7Viez845WzV7seR48WxBmJ\n0CFLWhHrIKli+jee1LVO9xPv/Wbv0FAQvMeUOLt0Uvsyymeos0d5hv6KL9utpnpY\nXyWu4lbJsbzC0GfusAwgNm6YLmxi2R4RXf2enDXs/Kngk4PMfNVHQUvz68eFC0Tw\nHg/+EQ6JAgMBAAECggEAOaNnFgnhhPvsNavU8aLYhrvrv9zCQpMUPiGRLMXojoSy\nqNeC4IyetnA96guv9fIRDOTqTf16rv8+Zpk0jpp9Un0THdewgPJlI+F7adq5FQaJ\ncNt3E304rVEP1MBEntCKFbcWuoBtLbQbYHT/CeEIHTy1boYIiAj0FnW4qs9bQAis\n+rYsOJtsGL0+M86j+Xjyyy+AFOIwEbzEWtluC/6QQbQjoAuJVEl5ojlvPVJg+qPv\nA8M/co1fH+jKLnDtaIQPD+4KqZRtxZi0caN002IsDn3yTZXfM7FqvSXpRdtCnuUX\nQUVjsOeUNATUxMmmSMoS5bKXdg1psKP+6586BUZ2bQKBgQDnnARQGrX0XyY9owcF\nsyND/K/D+ReMqXw2docJouVhWZ7npq8X9xAHv5wigcn4Oz3QWdmK3Sd7g+EQ7Fr8\nG1ZM5gGg+Gxm8xDbDZmH4cQekWQ6uxtW5OFYKoCZrCpxfMyRdR9/hcAhV5n46hDS\n26K4U5+s/7Qz/rmQv1MwpbADIwKBgQDeVeZqX82Asvh+zk2FxmtRiNILZcYBeUCN\nNgX+81tREiKnWsefM3lm2oXE8CmO//kyAEe0N9cO33lX7gdTii42WpPgMuG99gA9\nT/sW4pNClcPynJGuHXFs3CQVZ9f3+q21KU1FO6VAAfrDC2OwwfPCdsRTko6wmf6p\nhZHFlkpIYwKBgE7LbUwzSiPRGxltFT6DK0Q9+y4Y2EIqhu+gc2B74r2z17PHqVnl\n27ZHIb87mJKy1NzFNJVhl8UVoMQ5JNsQEdQni/ZPjdGYb+uWPN1VmXssy4SPk0WE\nqIVuMEIXqHjjlFUIG6cuwaaWPvPH7eFOh5VeHbylYZEu38K21H6AX9kxAoGBANlB\nxy4a/4zLVddTcJ1QDn5V3CoXAS1fdpyGNcWzt3+44PP32SjP+8ltr1mJ9JIvvyoE\n7AxGpHd8F+68QZx4Yj/qsqVaEwy03fcLuKfcL1nZTug75n7ldniRhREFsBw5cJSe\nD0ufxRKO3KLK9lc6rx9PPvkLNTOMxzSPuKoC+gNRAoGAfw5n8V/Tplu1d5OpGuG5\n8g79vReqpBDgYwCi/WqIZkMxoiV+LFqu5tRa49uJjcbVhSONmTsX3RHRItxHvO1h\nHHwemB9PcgGngUgCy1UN/XqP2NzUYuNpExxcllX3wdSUIMTWWGKEYxvoZnve4ty+\nkjEj2uyloA+knsPIuR7vEKE=\n-----END PRIVATE KEY-----\n",
+  client_email: "toycac@toycac24-419900.iam.gserviceaccount.com",
+  client_id: "102162798731964732623",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url:
+    "https://www.googleapis.com/robot/v1/metadata/x509/toycac%40toycac24-419900.iam.gserviceaccount.com",
+  universe_domain: "googleapis.com",
 };
 
 // Set up authentication with Google Sheets API
 const auth = new google.auth.GoogleAuth({
   credentials,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
 // Create a new instance of Google Sheets API
-const sheets = google.sheets({ version: 'v4', auth });
+const sheets = google.sheets({ version: "v4", auth });
 
 // export const config = {
 //   api: {
@@ -58,18 +61,26 @@ export default async function handler(req, res) {
       }
 
       // Check if the proof of payment file already exists
-      const existingProof = await UserAccountRegistration.findOne({ proofOfPayment: req.file.filename });
+      const existingProof = await UserAccountRegistration.findOne({
+        proofOfPayment: req.file.filename,
+      });
       if (existingProof) {
         // If the proof of payment already exists, send an error response to the user
         fs.unlinkSync(`uploads/proofOfPayment/${req.file.filename}`);
-        return res.status(400).json({ message: "Proof of payment has been used, try another one" });
+        return res
+          .status(400)
+          .json({ message: "Proof of payment has been used, try another one" });
       }
 
       // Check if the email already exists
-      const existingUser = await UserAccountRegistration.findOne({ email: req.body.email });
+      const existingUser = await UserAccountRegistration.findOne({
+        email: req.body.email,
+      });
       if (existingUser) {
         // If the email exists, send an appropriate error response to the user
-        return res.status(400).json({ message: "This email has been registered, try another one" });
+        return res
+          .status(400)
+          .json({ message: "This email has been registered, try another one" });
       }
 
       // Log the category selected by the user
@@ -107,10 +118,7 @@ export default async function handler(req, res) {
         (!req.body.guardianName || !req.body.guardianPhoneNumber)
       ) {
         additionalFieldsRequired = true;
-      } else if (
-        category === "nonTimsanite" &&
-        (!req.body.healthCondition)
-      ) {
+      } else if (category === "nonTimsanite" && !req.body.healthCondition) {
         additionalFieldsRequired = true;
       }
 
@@ -128,12 +136,16 @@ export default async function handler(req, res) {
       const participantID = generateParticipantID();
 
       // Fetch the last user from the database to extract the counter
-      const lastUser = await UserAccountRegistration.findOne({}, {}, { sort: { 'uniqueID': -1 } });
+      const lastUser = await UserAccountRegistration.findOne(
+        {},
+        {},
+        { sort: { uniqueID: -1 } }
+      );
 
       let counter = 1;
       if (lastUser && lastUser.uniqueID) {
         // Extract the counter from the last uniqueID
-        const parts = lastUser.uniqueID.split('-');
+        const parts = lastUser.uniqueID.split("-");
         if (parts.length === 3) {
           const lastCounter = parseInt(parts[2]);
           if (!isNaN(lastCounter)) {
@@ -143,7 +155,7 @@ export default async function handler(req, res) {
       }
 
       // Pad the counter with zeroes
-      const paddedCounter = counter.toString().padStart(3, '0');
+      const paddedCounter = counter.toString().padStart(3, "0");
 
       // Generate the new uniqueID
       const uniqueID = `TOYCAC24-${categoryID}-${participantID}${paddedCounter}`;
@@ -170,7 +182,7 @@ export default async function handler(req, res) {
       // Append data to Google Sheet
       await appendToSheet(userData);
 
-      // Create a folder 
+      // Create a folder
       const folderPath = `uploads/proof_of_payments`;
 
       // Ensure the target directory exists
@@ -215,14 +227,14 @@ export default async function handler(req, res) {
 // Function to append data to the Google Sheet
 async function appendToSheet(userData) {
   try {
-    const spreadsheetId = '1Ezna-5Jcaf9Cp24xdvAxcA-Nw18N2qsa0EGE0QiATxs'; // Replace with your Google Sheet ID
-    const range = 'Sheet1'; // Specify the range where you want to append data
+    const spreadsheetId = "1Ezna-5Jcaf9Cp24xdvAxcA-Nw18N2qsa0EGE0QiATxs"; // Replace with your Google Sheet ID
+    const range = "Sheet1"; // Specify the range where you want to append data
 
     // Construct the request body
     const request = {
       spreadsheetId,
       range,
-      valueInputOption: 'RAW',
+      valueInputOption: "RAW",
       resource: {
         values: [
           [
@@ -230,7 +242,7 @@ async function appendToSheet(userData) {
             userData.email,
             userData.phoneNumber,
             userData.uniqueID,
-            userData.approved ? 'Yes' : 'No', 
+            userData.approved ? "Yes" : "No",
             userData.proofOfPayment,
             // userData.role,
           ],
@@ -240,9 +252,9 @@ async function appendToSheet(userData) {
 
     // Append data to the Google Sheet
     const response = await sheets.spreadsheets.values.append(request);
-    console.log('Data appended successfully:', response.data);
+    console.log("Data appended successfully:", response.data);
   } catch (error) {
-    console.error('Error appending data to Google Sheet:', error);
+    console.error("Error appending data to Google Sheet:", error);
   }
 }
 
@@ -268,15 +280,16 @@ let houseAbbreviationIndex = 0;
 function generateParticipantID() {
   // Define the house abbreviations in the desired order
   const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"];
-  
+
   // Get the current house abbreviation based on the index
   const currentAbbreviation = houseAbbreviations[houseAbbreviationIndex];
-  
+
   // Generate the participant ID using the current abbreviation and counter
   const participantID = `${currentAbbreviation}`;
 
   // Increment the house abbreviation index
-  houseAbbreviationIndex = (houseAbbreviationIndex + 1) % houseAbbreviations.length;
+  houseAbbreviationIndex =
+    (houseAbbreviationIndex + 1) % houseAbbreviations.length;
 
   return participantID;
 }

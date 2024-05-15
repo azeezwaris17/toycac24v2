@@ -118,9 +118,9 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
   const [showProofOfPayment, setShowProofOfPayment] = useState(false);
   const [proofOfPaymentDisplayed, setProofOfPaymentDisplayed] = useState(false);
 
-  // Constructing the URL for the proof of payment image
-  const imageUrl = `/uploads/proof_of_payments/${user.proofOfPayment}`;
-  console.log(imageUrl);
+  // // Constructing the URL for the proof of payment image
+  // const imageUrl = `/uploads/proof_of_payments/${user.proofOfPayment}`;
+  // console.log(imageUrl);
 
   const handleProofOfPaymentClick = () => {
     setShowProofOfPayment(!showProofOfPayment);
@@ -160,7 +160,18 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
             <p>Institution: {user.institution}</p>
             <p>Medical condition: {user.medicalCondition}</p>
             <p>Registration Status: {user.approved ? "Approved" : "Pending"}</p>
+            <p>Timestamp: {user.timestamp}</p>
             <div className="flex flex-row items-center gap-2">
+              Proof of Payment:{" "}
+              <a
+                href={user.proofOfPayment}
+                target="_blank"
+                className="text-[12px] md:text-md"
+              >
+                {user.proofOfPayment}
+              </a>
+            </div>
+            {/* <div className="flex flex-row items-center gap-2">
               <p>
                 Proof:{" "}
                 <span className="text-[12px] md:text-md">
@@ -173,10 +184,10 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
               >
                 {buttonText}
               </button>
-            </div>
+            </div> */}
 
             {/* Display proof of payment directly within the modal */}
-            {showProofOfPayment && (
+            {/* {showProofOfPayment && (
               <div className="mt-4">
                 <Image
                   src={imageUrl}
@@ -186,7 +197,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
                   className="max-w-full"
                 />
               </div>
-            )}
+            )} */}
 
             <div className="flex justify-end gap-4 mt-4">
               {user.approved === false && (

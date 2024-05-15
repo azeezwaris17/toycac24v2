@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { upload } from "@vercel/blob/client";
 import { put } from "@vercel/blob";
 import { list } from "@vercel/blob";
-import { VercelBlobStore } from "@vercel/blob";
 // import { VercelBlobStore } from "@vercel/blob-store";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -92,6 +91,11 @@ export default function RegisterUser() {
     }
   };
 
+  // let options = {
+  //   token: "vercel_blob_rw_SM2Fkrx103yJkXil_2taarPG2lCNKYqscaz29vZXB7x3q7a",
+  //   limit: 500, // Return a maximum of 500 blob objects
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -101,6 +105,9 @@ export default function RegisterUser() {
       let newFormData;
 
       try {
+        // const { blobs } = await list(options);
+        // console.log("These are the blobs in the vercel-blob store:", blobs);
+
         const file = inputFileRef.current.files[0];
         // console.log("file uploaded", file);
         const blob = await put(file.name, file, {

@@ -136,6 +136,7 @@ async function handleUserRegistration(req, res) {
       proofOfPayment,
       password: hashedPassword,
       uniqueID,
+      approved,
       timestamp,
     });
 
@@ -202,9 +203,10 @@ async function appendToSheet(userData) {
             userData.fullName,
             userData.email,
             userData.phoneNumber,
-            userData.category,
             userData.uniqueID,
+            userData.approved,
             userData.proofOfPayment,
+            userData.category,
             userData.timestamp,
           ],
         ],
@@ -236,37 +238,30 @@ function getCategoryID(category) {
 
 // Define the initial house abbreviation index
 let houseAbbreviationIndex = 0;
-
-// Define the initial participant ID counter
 let participantIDCounter = 1;
 
-// // Function to generate participant ID based on cyclic pattern
+// Define an array to store used participant IDs
+let usedParticipantIDs = [];
+
+// Function to generate participant ID
 function generateParticipantID() {
   const houseAbbreviations = ["UMR", "UTH", "ALI", "ABU"];
-  const participantIDs = {
-    UMR: 0,
-    UTH: 0,
-    ALI: 0,
-    ABU: 0,
-  };
+  const currentAbbreviation = houseAbbreviations[houseAbbreviationIndex];
+  const paddedCounter = (((participantIDCounter - 1) % 4) + 1)
+    .toString()
+    .padStart(3, "0");
+  const participantID = `${currentAbbreviation}${paddedCounter}`;
 
-  // Increment the house abbreviation index
   houseAbbreviationIndex = (houseAbbreviationIndex + 1) % 4;
 
-  const currentAbbreviation = houseAbbreviations[houseAbbreviationIndex];
-
-  // Increment the participant ID counter only when the cycle is complete
   if (houseAbbreviationIndex === 0) {
     participantIDCounter++;
   }
 
-  const paddedCounter = (
-    participantIDs[currentAbbreviation] + participantIDCounter
-  )
-    .toString()
-    .padStart(3, "0");
+  // Push the generated participant ID to the array of used IDs
+  usedParticipantIDs.push(participantID);
 
-  return `${currentAbbreviation}${paddedCounter}`;
+  return participantID;
 }
 
 // Function to generate unique ID
@@ -280,22 +275,12 @@ async function generateUniqueID(category) {
     category: categoryID,
   }).distinct("uniqueID");
 
-  // Check if the existingIDs array is not empty
-  if (existingIDs.length > 0) {
-    // Get the last uniqueID
-    const lastUniqueID = existingIDs[existingIDs.length - 1];
-    // Extract the participant ID from the last uniqueID
-    const lastParticipantID = lastUniqueID.split("-").pop();
-    // Increment the participant ID based on the cyclic pattern
-    const nextParticipantID = (parseInt(lastParticipantID) + 1)
-      .toString()
-      .padStart(3, "0");
-    // Update the participant ID
-    participantID = nextParticipantID;
-  }
-
-  // Generate a new uniqueID until it's not in the existingIDs array
-  while (existingIDs.includes(uniqueID)) {
+  // If the existingIDs array is not empty and the uniqueID is already in the database,
+  // generate a new participantID until it's unique
+  while (
+    existingIDs.includes(uniqueID) ||
+    usedParticipantIDs.includes(participantID)
+  ) {
     participantID = generateParticipantID();
     uniqueID = `TOYCAC24-${categoryID}-${participantID}`;
   }
@@ -304,10 +289,10 @@ async function generateUniqueID(category) {
 }
 
 // Generate first 20 unique IDs for category "student"
-// const firstTwentyUniqueIDs = [];
-// for (let i = 0; i < 20; i++) {
-//   const uniqueID = await generateUniqueID("student");
-//   firstTwentyUniqueIDs.push(uniqueID);
-// }
+const firstTwentyUniqueIDs = [];
+for (let i = 0; i < 20; i++) {
+  const uniqueID = await generateUniqueID("student");
+  firstTwentyUniqueIDs.push(uniqueID);
+}
 
-// console.log(firstTwentyUniqueIDs);
+console.log(firstTwentyUniqueIDs);

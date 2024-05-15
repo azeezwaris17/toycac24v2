@@ -89,7 +89,9 @@ export default function RegisterUser() {
           console.log("Status:", status); // Log status here
           if (status === 500) {
             toast.error(
-              data && data.message ? data.message : "Server Error! Try again."
+              data && data.message
+                ? data.message
+                : "Server Error! please try again later."
             );
           } else {
             // No error payload found
@@ -336,8 +338,6 @@ export default function RegisterUser() {
           </div>
         </Modal.Body>
       </Modal>
-
-     
     </div>
   );
 }

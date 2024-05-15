@@ -20,12 +20,16 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-     // Check if the email already exists
-     const existingSuperAdmin = await SuperAdminAccountRegistration.findOne({ email: req.body.email });
-     if (existingSuperAdmin) {
-       // If the email exists, send an appropriate error response to the user
-       return res.status(400).json({ message: "This email has been registered, try another one" });
-     }
+    // Check if the email already exists
+    const existingSuperAdmin = await SuperAdminAccountRegistration.findOne({
+      email: req.body.email,
+    });
+    if (existingSuperAdmin) {
+      // If the email exists, send an appropriate error response to the user
+      return res
+        .status(400)
+        .json({ message: "This email has been registered, try another one" });
+    }
 
     // Hash the password before saving it to the database
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -57,7 +61,7 @@ export default async function handler(req, res) {
     } catch (error) {
       console.error("Error creating superadmin:", error);
       res.status(500).json({
-        message: "Internal Server Error - SuperAdmin creation failed",
+        message: "Server Error, please try again later",
       });
     }
   } else {
@@ -98,7 +102,9 @@ let counter = 0;
 // Utility function to generate uniqueID for Admin
 async function generateUniqueID() {
   try {
-    const lastAdmin = await SuperAdminAccountRegistration.findOne().sort({$natural:-1}).limit(1);
+    const lastAdmin = await SuperAdminAccountRegistration.findOne()
+      .sort({ $natural: -1 })
+      .limit(1);
     if (lastAdmin) {
       const lastUniqueID = lastAdmin.uniqueID;
       const lastCounter = parseInt(lastUniqueID.split("-")[2]);

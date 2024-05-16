@@ -98,25 +98,25 @@ async function handleUserRegistration(req, res) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const categoryID = getCategoryID(category);
-    const participantID = generateParticipantID();
+    // const categoryID = getCategoryID(category);
+    // const participantID = generateParticipantID();
 
-    const lastUser = await UserAccountRegistration.findOne(
-      {},
-      {},
-      { sort: { uniqueID: -1 } }
-    );
+    // const lastUser = await UserAccountRegistration.findOne(
+    //   {},
+    //   {},
+    //   { sort: { uniqueID: -1 } }
+    // );
 
-    let counter = 1;
-    if (lastUser && lastUser.uniqueID) {
-      const parts = lastUser.uniqueID.split("-");
-      if (parts.length === 3) {
-        const lastCounter = parseInt(parts[2]);
-        if (!isNaN(lastCounter)) {
-          counter = lastCounter + 1;
-        }
-      }
-    }
+    // let counter = 1;
+    // if (lastUser && lastUser.uniqueID) {
+    //   const parts = lastUser.uniqueID.split("-");
+    //   if (parts.length === 3) {
+    //     const lastCounter = parseInt(parts[2]);
+    //     if (!isNaN(lastCounter)) {
+    //       counter = lastCounter + 1;
+    //     }
+    //   }
+    // }
 
     const uniqueID = await generateUniqueID(category);
     const timestamp = new Date();
@@ -136,14 +136,14 @@ async function handleUserRegistration(req, res) {
       proofOfPayment,
       password: hashedPassword,
       uniqueID,
-      approved,
+      // approved,
       timestamp,
     });
 
-    // console.log(
-    //   "This is the user data details that is about to be saved for the registering user:",
-    //   userData
-    // );
+    console.log(
+      "This is the user data details that is about to be saved for the registering user:",
+      userData
+    );
 
     await userData.save();
 
@@ -244,22 +244,24 @@ let participantIDCounter = 1;
 let usedParticipantIDs = [];
 
 // Function to generate participant ID
-function generateParticipantID() {
-  const houseAbbreviations = ["UMR", "UTH", "ALI", "ABU"];
-  const currentAbbreviation = houseAbbreviations[houseAbbreviationIndex];
-  const paddedCounter = (((participantIDCounter - 1) % 4) + 1)
-    .toString()
-    .padStart(3, "0");
+function generateParticipantID(abbreviation) {
+  const currentAbbreviation = abbreviation || "ABU";
+  const paddedCounter = participantIDCounter.toString().padStart(3, "0");
   const participantID = `${currentAbbreviation}${paddedCounter}`;
-
-  houseAbbreviationIndex = (houseAbbreviationIndex + 1) % 4;
-
-  if (houseAbbreviationIndex === 0) {
-    participantIDCounter++;
-  }
 
   // Push the generated participant ID to the array of used IDs
   usedParticipantIDs.push(participantID);
+
+  // Reset the participant ID counter to 1 if the last registered user's abbreviation is "ALI"
+  if (abbreviation === "ALI") {
+    participantIDCounter = 1;
+  } else {
+    // Increment the house abbreviation index and reset the participant ID counter
+    houseAbbreviationIndex = (houseAbbreviationIndex + 1) % 4;
+    if (houseAbbreviationIndex === 0) {
+      participantIDCounter++;
+    }
+  }
 
   return participantID;
 }
@@ -267,32 +269,67 @@ function generateParticipantID() {
 // Function to generate unique ID
 async function generateUniqueID(category) {
   const categoryID = getCategoryID(category);
-  let participantID = generateParticipantID();
-  let uniqueID = `TOYCAC24-${categoryID}-${participantID}`;
 
-  // Check the database for existing uniqueIDs
-  const existingIDs = await UserAccountRegistration.find({
-    category: categoryID,
-  }).distinct("uniqueID");
+  console.log("This is the Category ID generated:", categoryID);
 
-  // If the existingIDs array is not empty and the uniqueID is already in the database,
-  // generate a new participantID until it's unique
-  while (
-    existingIDs.includes(uniqueID) ||
-    usedParticipantIDs.includes(participantID)
-  ) {
+  // Define house abbreviations within the function
+  const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"]; // Adjusted sequence
+
+  // Fetch the last user from the database
+  const lastUser = await UserAccountRegistration.findOne()
+    .sort({ $natural: -1 })
+    .limit(1);
+
+  console.log("This is last user in the database:", lastUser);
+
+  let participantID;
+  if (lastUser && lastUser.uniqueID) {
+    console.log("This is the last user uniqueID:", lastUser.uniqueID);
+
+    // Extract the participant ID from the last unique ID
+    const lastParticipantID = lastUser.uniqueID.split("-").pop();
+    console.log(
+      "This is the last user participant ID extracted from the last registered user unique ID:",
+      lastParticipantID
+    );
+
+    // Get the index of the last user's abbreviation
+    const lastIndex = houseAbbreviations.indexOf(
+      lastParticipantID.substring(0, 3)
+    );
+
+    // Calculate the index of the next abbreviation
+    const nextIndex = (lastIndex + 1) % houseAbbreviations.length;
+
+    // Get the next abbreviation
+    const nextAbbreviation = houseAbbreviations[nextIndex];
+
+    // Generate a new participant ID using the updated counter
+    participantID = generateParticipantID(nextAbbreviation);
+    console.log(
+      "This is the participant ID of the new user with the next house abbreviation:",
+      participantID
+    );
+  } else {
+    // Generate participant ID without incrementing the counter
     participantID = generateParticipantID();
-    uniqueID = `TOYCAC24-${categoryID}-${participantID}`;
+    console.log(
+      "This is the participant ID of the new user if the last user participant ID is not ALI:",
+      participantID
+    );
   }
+
+  // Generate the unique ID
+  const uniqueID = `TOYCAC24-${categoryID}-${participantID}`;
 
   return uniqueID;
 }
 
 // Generate first 20 unique IDs for category "student"
-const firstTwentyUniqueIDs = [];
-for (let i = 0; i < 20; i++) {
-  const uniqueID = await generateUniqueID("student");
-  firstTwentyUniqueIDs.push(uniqueID);
-}
+// const firstTwentyUniqueIDs = [];
+// for (let i = 0; i < 20; i++) {
+//   const uniqueID = await generateUniqueID("student");
+//   firstTwentyUniqueIDs.push(uniqueID);
+// }
 
-console.log(firstTwentyUniqueIDs);
+// console.log(firstTwentyUniqueIDs);

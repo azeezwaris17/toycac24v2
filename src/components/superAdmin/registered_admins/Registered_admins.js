@@ -12,13 +12,9 @@ import {
   setRoleData,
 } from "../../../redux/super_admin/superAdminFetchAllRoles";
 
-import {
-  assignRole
-} from "../../../redux/super_admin/superAdminAssignRole";
+import { assignRole } from "../../../redux/super_admin/superAdminAssignRole";
 
-import {
-  revokeRole
-} from "../../../redux/super_admin/superAdminRevokeRole";
+import { revokeRole } from "../../../redux/super_admin/superAdminRevokeRole";
 
 import { approveAdmin } from "../../../redux/super_admin/superAdminApproveAdminAccount";
 
@@ -32,8 +28,7 @@ import { saveAs } from "file-saver";
 import ExcelJS from "exceljs";
 import * as XLSX from "xlsx";
 
-import { Dropdown, Alert} from "flowbite-react";
-
+import { Dropdown, Alert } from "flowbite-react";
 
 const RegisteredAdminsTable = ({ admins, openAdminDetailsModal }) => {
   return (
@@ -92,7 +87,7 @@ const RegisteredAdminsTable = ({ admins, openAdminDetailsModal }) => {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                 {admin.fullName}
               </td>
-              
+
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                 {admin.email}
               </td>
@@ -131,11 +126,7 @@ const RegisteredAdminsTable = ({ admins, openAdminDetailsModal }) => {
   );
 };
 
-const AdminDetailsModal = ({
-  admin,
-  onClose,
-  onApprove,
-}) => {
+const AdminDetailsModal = ({ admin, onClose, onApprove }) => {
   const dispatch = useDispatch();
   const roles = useSelector((state) => state.superAdminFetchAllRoles.roles);
   const [selectedRole, setSelectedRole] = useState(admin.role);
@@ -169,6 +160,7 @@ const AdminDetailsModal = ({
     fetchRolesData();
   }, [dispatch]);
 
+  // Function to handle assigning role
   const handleAssignRole = () => {
     // Show confirmation alert before assigning role
     setShowConfirmationAlert(true);
@@ -181,7 +173,7 @@ const AdminDetailsModal = ({
         // If role assignment is successful, show success alert
         if (success) {
           setShowSuccessAlert(true);
-          
+
           // Fetch the updated admin data and update the Redux store
           dispatch(fetchAdmins()).then((response) => {
             if (response.payload && Array.isArray(response.payload.admins)) {
@@ -204,7 +196,7 @@ const AdminDetailsModal = ({
         setError("Error assigning role. Please try again.");
         console.error("Error assigning role:", error);
       });
-  
+
     // Close the confirmation alert
     setShowConfirmationAlert(false);
   };
@@ -215,8 +207,8 @@ const AdminDetailsModal = ({
       // Dispatch revokeRole action with adminId
       dispatch(revokeRole(admin._id))
         .then((success) => {
-           // If role revoking is successful, show success alert
-           if (success) {
+          // If role revoking is successful, show success alert
+          if (success) {
             setShowSuccessAlert(true); // Show success alert on successful revocation
 
             // Fetch the updated admin data and update the Redux store
@@ -264,7 +256,12 @@ const AdminDetailsModal = ({
               <p>Status: {admin.approved ? "Approved" : "Pending"}</p>
               <p>Role: {admin.role}</p>
               <div>
-                <Dropdown label="Assign Role" size="sm" placement="buttom" inline>
+                <Dropdown
+                  label="Assign Role"
+                  size="sm"
+                  placement="buttom"
+                  inline
+                >
                   {Array.isArray(roles) &&
                     roles.map((role) => (
                       <Dropdown.Item
@@ -273,28 +270,48 @@ const AdminDetailsModal = ({
                           setSelectedRole(role); // Set selectedRole immediately
                           handleAssignRole(); // Assign role immediately
                         }}
-                        className={role === "admin" ? "text-blue-500" : (admin && admin.role && admin.role.includes(role) ? "text-green-500" : "text-black")} // Check if role is primary or secondary assigned to admin
+                        className={
+                          role === "admin"
+                            ? "text-blue-500"
+                            : admin && admin.role && admin.role.includes(role)
+                            ? "text-green-500"
+                            : "text-black"
+                        } // Check if role is primary or secondary assigned to admin
                       >
                         {role}
-                        {admin && admin.role && admin.role.includes(role) && ( // Render remove icon only for assigned roles
-                          <IoPersonRemoveOutline
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent dropdown from closing
-                              handleRevokeRole(role); // Handle revoking role
-                            }}
-                            className="text-red-500 ml-2 cursor-pointer"
-                          />
-                        )}
+                        {admin &&
+                          admin.role &&
+                          admin.role.includes(role) && ( // Render remove icon only for assigned roles
+                            <IoPersonRemoveOutline
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent dropdown from closing
+                                handleRevokeRole(role); // Handle revoking role
+                              }}
+                              className="text-red-500 ml-2 cursor-pointer"
+                            />
+                          )}
                       </Dropdown.Item>
                     ))}
                 </Dropdown>
               </div>
               {/* Confirmation alert */}
               {showConfirmationAlert && (
-                <Alert color="warning" withBorderAccent onDismiss={() => setShowConfirmationAlert(false)}>
+                <Alert
+                  color="warning"
+                  withBorderAccent
+                  onDismiss={() => setShowConfirmationAlert(false)}
+                >
                   <div className="flex flex-row gap-2 items-center justify-start">
-                    <span className="font-medium">Are You sure you want to assign the role of &quot;{selectedRole}&quot; to &quot;{admin.fullName}&quot;?</span>
-                    <button onClick={confirmAssignRole} className="text-green-500 font-medium mr-4">OK</button>
+                    <span className="font-medium">
+                      Are You sure you want to assign the role of &quot;
+                      {selectedRole}&quot; to &quot;{admin.fullName}&quot;?
+                    </span>
+                    <button
+                      onClick={confirmAssignRole}
+                      className="text-green-500 font-medium mr-4"
+                    >
+                      OK
+                    </button>
                   </div>
                 </Alert>
               )}
@@ -308,8 +325,14 @@ const AdminDetailsModal = ({
 
               {/* Success alert */}
               {showSuccessAlert && (
-                <Alert color="success" onDismiss={() => setShowSuccessAlert(false)}>
-                  <span className="font-medium">Role &quot;{selectedRole}&quot; successfully assigned to &quot;{admin.fullName}&quot;</span>
+                <Alert
+                  color="success"
+                  onDismiss={() => setShowSuccessAlert(false)}
+                >
+                  <span className="font-medium">
+                    Role &quot;{selectedRole}&quot; successfully assigned to
+                    &quot;{admin.fullName}&quot;
+                  </span>
                 </Alert>
               )}
             </div>
@@ -338,7 +361,6 @@ const AdminDetailsModal = ({
     </div>
   );
 };
-
 
 export default function RegisteredAdminsComponent() {
   // const users = useSelector((state) => state.adminApproveUserAccount.users);
@@ -450,8 +472,6 @@ export default function RegisteredAdminsComponent() {
 
     fetchData();
   }, [currentPage, searchTerm, filterStatus, dispatch]);
-
-        
 
   const openAdminDetailsModal = (admin) => {
     setSelectedAdmin(admin); // Set the selected admin

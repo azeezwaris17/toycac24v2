@@ -17,6 +17,7 @@ const adminSchema = new mongoose.Schema({
     type: String,
     enum: [
       "admin",
+      "Reg. Team Lead",
       "Health Team Lead",
       "Media Team Lead",
       "Welfare Team Lead",

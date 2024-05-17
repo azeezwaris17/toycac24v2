@@ -8,8 +8,16 @@ const jwtSecret = crypto.randomBytes(64).toString("hex");
 
 // Define the notification schema
 const notificationSchema = new mongoose.Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'SuperAdminAccountRegistration', required: true },
-  recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'SuperAdminAccountRegistration', required: true },
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SuperAdminAccountRegistration",
+    required: true,
+  },
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SuperAdminAccountRegistration",
+    required: true,
+  },
   message: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
@@ -21,8 +29,8 @@ const superAdminSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true },
   password: { type: String, required: true },
   uniqueID: { type: String, required: true },
-  role: { type: String, enum: ["superAdmin"], default: "superAdmin" }, // Include role field
-  notifications: [notificationSchema], // Include notifications field
+  role: { type: String, enum: ["superAdmin"], default: "superAdmin" },
+  notifications: [notificationSchema],
 });
 
 // Method to compare password for user signin

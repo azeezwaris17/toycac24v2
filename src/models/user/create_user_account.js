@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["user", "admin"], default: "user" },
   uniqueID: { type: String, required: true },
+  registrationTimestamp: { type: Date, required: true },
   approved: { type: Boolean, default: false },
 });
 

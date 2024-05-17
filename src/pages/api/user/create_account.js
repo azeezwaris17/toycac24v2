@@ -98,28 +98,10 @@ async function handleUserRegistration(req, res) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    // const categoryID = getCategoryID(category);
-    // const participantID = generateParticipantID();
-
-    // const lastUser = await UserAccountRegistration.findOne(
-    //   {},
-    //   {},
-    //   { sort: { uniqueID: -1 } }
-    // );
-
-    // let counter = 1;
-    // if (lastUser && lastUser.uniqueID) {
-    //   const parts = lastUser.uniqueID.split("-");
-    //   if (parts.length === 3) {
-    //     const lastCounter = parseInt(parts[2]);
-    //     if (!isNaN(lastCounter)) {
-    //       counter = lastCounter + 1;
-    //     }
-    //   }
-    // }
 
     const uniqueID = await generateUniqueID(category);
-    const timestamp = new Date();
+    const registrationTimestamp = new Date();
+    // console.log("Ths is the registration timestamp:", registrationTimestamp);
 
     const userData = new UserAccountRegistration({
       fullName,
@@ -135,15 +117,16 @@ async function handleUserRegistration(req, res) {
       healthCondition: healthCondition || "",
       proofOfPayment,
       password: hashedPassword,
+      registrationTimestamp,
       uniqueID,
-      // approved,
-      timestamp,
     });
 
-    console.log(
-      "This is the user data details that is about to be saved for the registering user:",
-      userData
-    );
+    // userData.registrationTimestamp = timestamp; // Add timestamp manually
+
+    // console.log(
+    //   "This is the user data details that is about to be saved for the registering user:",
+    //   userData
+    // );
 
     await userData.save();
 
@@ -157,7 +140,7 @@ async function handleUserRegistration(req, res) {
       category,
       proofOfPayment,
       uniqueID,
-      timestamp,
+      registrationTimestamp,
     });
   } catch (error) {
     console.error("Error processing request:", error);
@@ -207,7 +190,7 @@ async function appendToSheet(userData) {
             userData.approved,
             userData.proofOfPayment,
             userData.category,
-            userData.timestamp,
+            userData.registrationTimestamp,
           ],
         ],
       },
@@ -254,7 +237,7 @@ function generateParticipantID(abbreviation) {
 
   // Reset the participant ID counter to 1 if the last registered user's abbreviation is "ALI"
   if (abbreviation === "ALI") {
-    participantIDCounter = 1;
+    participantIDCounter++;
   } else {
     // Increment the house abbreviation index and reset the participant ID counter
     houseAbbreviationIndex = (houseAbbreviationIndex + 1) % 4;

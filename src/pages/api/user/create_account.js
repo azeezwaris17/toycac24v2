@@ -212,7 +212,7 @@ function getCategoryID(category) {
       return "IOTB";
     case "children":
       return "CHD";
-    case "nonTimsanite":
+    case "nontimsanite":
       return "NTMS";
     default:
       return "";
@@ -256,16 +256,16 @@ async function generateUniqueID(category) {
     const nextIndex = (lastIndex + 1) % houseAbbreviations.length;
     const nextAbbreviation = houseAbbreviations[nextIndex];
 
-    // Generate a new participant ID using the updated abbreviation
-    participantID = generateParticipantID(nextAbbreviation);
-
-    // Increment the participant ID counter if the last abbreviation was "ALI"
     if (lastParticipantID.startsWith("ALI")) {
       participantIDCounter++;
+      participantID = generateParticipantID("ABU"); // Start the new cycle with "ABU"
+    } else {
+      // Generate a new participant ID using the updated abbreviation
+      participantID = generateParticipantID(nextAbbreviation);
     }
   } else {
     // Generate participant ID with the default abbreviation
-    participantID = generateParticipantID();
+    participantID = generateParticipantID("ABU");
   }
 
   const uniqueID = `TOYCAC24-${categoryID}-${participantID}`;

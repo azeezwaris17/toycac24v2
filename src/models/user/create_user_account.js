@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   guardianName: { type: String },
   guardianPhoneNumber: { type: String },
   medicalCondition: { type: String, default: "" },
-  healthCondition: { type: String, default: "" },
+  NTMBIO: { type: String, default: "" },
   proofOfPayment: {
     type: String,
     required: true,

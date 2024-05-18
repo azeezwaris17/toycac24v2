@@ -37,7 +37,7 @@ async function handleUserRegistration(req, res) {
       guardianName,
       guardianPhoneNumber,
       medicalCondition,
-      healthCondition,
+      NTMBIO,
       proofOfPayment,
       password,
     } = req.body;
@@ -72,7 +72,7 @@ async function handleUserRegistration(req, res) {
     } else if (category === "children") {
       requiredFields.push("guardianName", "guardianPhoneNumber");
     } else if (category === "nonTimsanite") {
-      requiredFields.push("healthCondition");
+      requiredFields.push("NTMBIO");
     }
 
     let additionalFieldsRequired = false;
@@ -86,7 +86,7 @@ async function handleUserRegistration(req, res) {
       (!guardianName || !guardianPhoneNumber)
     ) {
       additionalFieldsRequired = true;
-    } else if (category === "nonTimsanite" && !healthCondition) {
+    } else if (category === "nonTimsanite" && !NTMBIO) {
       additionalFieldsRequired = true;
     }
 
@@ -114,7 +114,7 @@ async function handleUserRegistration(req, res) {
       guardianName: guardianName || "",
       guardianPhoneNumber: guardianPhoneNumber || "",
       medicalCondition: medicalCondition || "",
-      healthCondition: healthCondition || "",
+      NTMBIO: NTMBIO || "",
       proofOfPayment,
       password: hashedPassword,
       registrationTimestamp,
@@ -235,7 +235,7 @@ function generateParticipantID(abbreviation) {
   // Push the generated participant ID to the array of used IDs
   usedParticipantIDs.push(participantID);
 
-  // Reset the participant ID counter to 1 if the last registered user's abbreviation is "ALI"
+  // Increment the participant ID counter by 1 if the last registered user's abbreviation is "ALI"
   if (abbreviation === "ALI") {
     participantIDCounter++;
   } else {
@@ -253,7 +253,7 @@ function generateParticipantID(abbreviation) {
 async function generateUniqueID(category) {
   const categoryID = getCategoryID(category);
 
-  console.log("This is the Category ID generated:", categoryID);
+  // console.log("This is the Category ID generated:", categoryID);
 
   // Define house abbreviations within the function
   const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"]; // Adjusted sequence
@@ -263,18 +263,18 @@ async function generateUniqueID(category) {
     .sort({ $natural: -1 })
     .limit(1);
 
-  console.log("This is last user in the database:", lastUser);
+  // console.log("This is last user in the database:", lastUser);
 
   let participantID;
   if (lastUser && lastUser.uniqueID) {
-    console.log("This is the last user uniqueID:", lastUser.uniqueID);
+    // console.log("This is the last user uniqueID:", lastUser.uniqueID);
 
     // Extract the participant ID from the last unique ID
     const lastParticipantID = lastUser.uniqueID.split("-").pop();
-    console.log(
-      "This is the last user participant ID extracted from the last registered user unique ID:",
-      lastParticipantID
-    );
+    // console.log(
+    //   "This is the last user participant ID extracted from the last registered user unique ID:",
+    //   lastParticipantID
+    // );
 
     // Get the index of the last user's abbreviation
     const lastIndex = houseAbbreviations.indexOf(
@@ -289,17 +289,17 @@ async function generateUniqueID(category) {
 
     // Generate a new participant ID using the updated counter
     participantID = generateParticipantID(nextAbbreviation);
-    console.log(
-      "This is the participant ID of the new user with the next house abbreviation:",
-      participantID
-    );
+    // console.log(
+    //   "This is the participant ID of the new user with the next house abbreviation:",
+    //   participantID
+    // );
   } else {
     // Generate participant ID without incrementing the counter
     participantID = generateParticipantID();
-    console.log(
-      "This is the participant ID of the new user if the last user participant ID is not ALI:",
-      participantID
-    );
+    // console.log(
+    //   "This is the participant ID of the new user if the last user participant ID is not ALI:",
+    //   participantID
+    // );
   }
 
   // Generate the unique ID

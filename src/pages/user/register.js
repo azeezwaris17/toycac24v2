@@ -21,17 +21,70 @@ import { BiSolidInstitution } from "react-icons/bi";
 import { GiGraduateCap } from "react-icons/gi";
 import { TbBrandGuardian } from "react-icons/tb";
 import { MdCategory } from "react-icons/md";
+import { MdOutlineDriveFolderUpload } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { validateRegistrationFormData } from "../../utils/user/registrationFormValidation";
+import { IoSchoolOutline, IoSchool } from "react-icons/io5";
+
+// import { validateRegistrationFormData } from "../../utils/user/registrationFormValidation";
+
 import { createUserAccount } from "../../redux/user/UserCreateAccount";
-// import { setRequestConfig  } from "../../redux/user/userRegistrationAuthSlice";
 import { Modal } from "flowbite-react";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
+import Select from "react-select";
 
-// import dotenv from "dotenv";
-// dotenv.config();
+const institutions = [
+  {
+    value: "Emmanuel Alayande University of Education",
+    label: "Emmanuel Alayande University of Education",
+  },
+  {
+    value: "Ladoke Akintola University of Technology",
+    label: "Ladoke Akintola University of Technology",
+  },
+  {
+    value: "The Oke-Ogun Polytechnic, Saki",
+    label: "The Oke-Ogun Polytechnic, Saki",
+  },
+  {
+    value: "Mufulanihun College of Education",
+    label: "Mufulanihun College of Education",
+  },
+  {
+    value: "University of Ibadan",
+    label: "University of Ibadan",
+  },
+  {
+    value: "The Polytechnic, Ibadan",
+    label: "The Polytechnic, Ibadan",
+  },
+  {
+    value: "Oyo State College of Agriculture and Technology, Igboora",
+    label: "Oyo State College of Agriculture and Technology, Igboora",
+  },
+  {
+    value: "Oyo State College of Health Science and Technology, Eleyele",
+    label: "Oyo State College of Health Science and Technology, Eleyele",
+  },
+  {
+    value: "Oyo State College of Education, Lanlate",
+    label: "Oyo State College of Education, Lanlate",
+  },
+  {
+    value: "MOOR Plantation",
+    label:
+      "Federal College of Animal Health and Production Technology, Moor Plantation, Ibadan",
+  },
+  {
+    value: "SPED",
+    label: "Federal College of Education (Special), Oyo",
+  },
+  {
+    value: "others",
+    label: "Others",
+  },
+];
 
 export const config = {
   runtime: "experimental-edge",
@@ -55,10 +108,12 @@ export default function RegisterUser() {
     guardianName: "",
     guardianPhoneNumber: "",
     medicalCondition: "",
-    healthCondition: "",
+    NTMBIO: "",
     proofOfPayment: "",
     category: "",
   });
+
+  const [customInstitution, setCustomInstitution] = useState("");
   const inputFileRef = useRef(null);
   const [blob, setBlob] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -91,10 +146,16 @@ export default function RegisterUser() {
     }
   };
 
-  // let options = {
-  //   token: "vercel_blob_rw_SM2Fkrx103yJkXil_2taarPG2lCNKYqscaz29vZXB7x3q7a",
-  //   limit: 500, // Return a maximum of 500 blob objects
-  // };
+  const handleCustomInstitutionChange = (e) => {
+    setCustomInstitution(e.target.value);
+  };
+
+  const handleInstitutionChange = (selectedOption) => {
+    if (selectedOption.value === "others") {
+      setCustomInstitution(""); // Clear the custom institution field if "Others" is selected
+    }
+    setFormData({ ...formData, institution: selectedOption.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -328,14 +389,44 @@ export default function RegisterUser() {
                     Institution
                   </label>
                   <div className="flex items-center">
-                    <BiSolidInstitution className="h-5 w-5 mr-2 text-[#DFBF76]" />
-                    <input
+                    <IoSchoolOutline className="h-5 w-5 mr-2 text-[#DFBF76]" />
+
+                    <Select
+                      id="institution"
+                      name="institution"
+                      placeholder="Select Institution"
+                      options={institutions}
+                      onChange={handleInstitutionChange}
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    />
+                    {/* <input
                       type="text"
                       id="institution"
                       name="institution"
                       placeholder="Institution"
                       value={formData.institution}
                       onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    /> */}
+                  </div>
+                </div>
+              )}
+
+              {formData.institution === "others" && (
+                <div className="mb-4">
+                  <label htmlFor="customInstitution" className="sr-only">
+                    Custom Institution
+                  </label>
+                  <div className="flex items-center">
+                    <IoSchool className="h-5 w-5 mr-2 text-[#DFBF76]" />
+                    <input
+                      type="text"
+                      id="customInstitution"
+                      name="customInstitution"
+                      placeholder="Specify your institution"
+                      value={customInstitution}
+                      onChange={handleCustomInstitutionChange}
                       required
                       className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
                     />
@@ -351,7 +442,7 @@ export default function RegisterUser() {
                       Institution
                     </label>
                     <div className="flex items-center">
-                      <BiSolidInstitution className="h-5 w-5 mr-2 text-[#DFBF76]" />
+                      <IoSchoolOutline className="h-5 w-5 mr-2 text-[#DFBF76]" />
                       <input
                         type="text"
                         id="institution"
@@ -433,17 +524,17 @@ export default function RegisterUser() {
 
               {formData.category === "nonTimsanite" && (
                 <div className="mb-4">
-                  <label htmlFor="healthCondition" className="sr-only">
-                    What are you allergic to?
+                  <label htmlFor="NTMBIO" className="sr-only">
+                    Briefly tell us about you?
                   </label>
                   <div className="flex items-center">
                     <BiSolidInstitution className="h-5 w-5 mr-2 text-[#DFBF76]" />
                     <input
                       type="text"
-                      id="healthCondition"
-                      name="healthCondition"
-                      placeholder="What are you allergic to"
-                      value={formData.healthCondition}
+                      id="NTMBIO"
+                      name="NTMBIO"
+                      placeholder="Briefly tell us about you?"
+                      value={formData.NTMBIO}
                       onChange={handleInputChange}
                       required
                       className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
@@ -479,16 +570,23 @@ export default function RegisterUser() {
                   Proof of Payment
                 </label>
                 <div className="flex items-center">
-                  <FiUser className="h-5 w-5 mr-2 text-[#DFBF76]" />
-                  <input
-                    type="file"
-                    id="proofOfPayment"
-                    name="proofOfPayment"
-                    ref={inputFileRef}
-                    // onChange={handleInputChange}
-                    required
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                  />
+                  <MdOutlineDriveFolderUpload className="h-5 w-5 mr-2 text-[#DFBF76]" />
+                  <div className="flex flex-col gap-1">
+                    <label
+                      htmlFor="proofOfPayment"
+                      className="text-gray-400 text-sm"
+                    >
+                      Upload proof of Payment
+                    </label>
+                    <input
+                      type="file"
+                      id="proofOfPayment"
+                      name="proofOfPayment"
+                      ref={inputFileRef}
+                      required
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    />
+                  </div>
                 </div>
               </div>
 

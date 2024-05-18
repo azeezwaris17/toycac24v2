@@ -70,7 +70,11 @@ export default function Home() {
 
       {/* Modal */}
       <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header><div className="p-4 space-y-6"><p>Welcome to TOYCAC&apos;24!!!</p></div></Modal.Header>
+        <Modal.Header>
+          <div className="p-4 space-y-6">
+            <p>Welcome to TOYCAC&apos;24!!!</p>
+          </div>
+        </Modal.Header>
         <Modal.Body>
           <div className="p-4 space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -79,22 +83,33 @@ export default function Home() {
               camp registration proof of payment.
             </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              If you are yet to pay, kindly do so the following account details and come
-              back to start your registration.
+              If you are yet to pay, kindly do so to the account details below
+              and come back to start your registration.
             </p>
 
             <ul className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              <li><span className="text-[#647862] font-bold">Account Name:</span> BELLO ISMAHEEL</li>
-              <li><span className="text-[#647862] font-bold">Account Number:</span> 0232160832</li>
-              <li><span className="text-[#647862] font-bold">Bank:</span> GUARANTY TRUST BANK</li>
+              <li>
+                <span className="text-[#647862] font-bold">Account Name:</span>{" "}
+                BELLO ISMAHEEL
+              </li>
+              <li>
+                <span className="text-[#647862] font-bold">
+                  Account Number:
+                </span>{" "}
+                0232160832
+              </li>
+              <li>
+                <span className="text-[#647862] font-bold">Bank:</span> GUARANTY
+                TRUST BANK
+              </li>
             </ul>
           </div>
         </Modal.Body>
         <Modal.Footer>
-        <div className="p-4 space-y-6">
-          <Button color="gray" onClick={() => setOpenModal(false)}>
-            OK
-          </Button>
+          <div className="p-4 space-y-6">
+            <Button color="gray" onClick={() => setOpenModal(false)}>
+              OK
+            </Button>
           </div>
         </Modal.Footer>
       </Modal>

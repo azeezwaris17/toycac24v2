@@ -212,7 +212,7 @@ function getCategoryID(category) {
       return "IOTB";
     case "children":
       return "CHD";
-    case "non-timsanite":
+    case "nonTimsanite":
       return "NTMS";
     default:
       return "";
@@ -232,19 +232,7 @@ function generateParticipantID(abbreviation) {
   const paddedCounter = participantIDCounter.toString().padStart(3, "0");
   const participantID = `${currentAbbreviation}${paddedCounter}`;
 
-  // Push the generated participant ID to the array of used IDs
   usedParticipantIDs.push(participantID);
-
-  // Increment the participant ID counter by 1 if the last registered user's abbreviation is "ALI"
-  if (abbreviation === "ALI") {
-    participantIDCounter++;
-  } else {
-    // Increment the house abbreviation index and reset the participant ID counter
-    houseAbbreviationIndex = (houseAbbreviationIndex + 1) % 4;
-    if (houseAbbreviationIndex === 0) {
-      participantIDCounter++;
-    }
-  }
 
   return participantID;
 }
@@ -253,56 +241,33 @@ function generateParticipantID(abbreviation) {
 async function generateUniqueID(category) {
   const categoryID = getCategoryID(category);
 
-  // console.log("This is the Category ID generated:", categoryID);
+  const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"];
 
-  // Define house abbreviations within the function
-  const houseAbbreviations = ["ABU", "UMR", "UTH", "ALI"]; // Adjusted sequence
-
-  // Fetch the last user from the database
   const lastUser = await UserAccountRegistration.findOne()
     .sort({ $natural: -1 })
     .limit(1);
 
-  // console.log("This is last user in the database:", lastUser);
-
   let participantID;
   if (lastUser && lastUser.uniqueID) {
-    // console.log("This is the last user uniqueID:", lastUser.uniqueID);
-
-    // Extract the participant ID from the last unique ID
     const lastParticipantID = lastUser.uniqueID.split("-").pop();
-    // console.log(
-    //   "This is the last user participant ID extracted from the last registered user unique ID:",
-    //   lastParticipantID
-    // );
-
-    // Get the index of the last user's abbreviation
     const lastIndex = houseAbbreviations.indexOf(
       lastParticipantID.substring(0, 3)
     );
-
-    // Calculate the index of the next abbreviation
     const nextIndex = (lastIndex + 1) % houseAbbreviations.length;
-
-    // Get the next abbreviation
     const nextAbbreviation = houseAbbreviations[nextIndex];
 
-    // Generate a new participant ID using the updated counter
+    // Generate a new participant ID using the updated abbreviation
     participantID = generateParticipantID(nextAbbreviation);
-    // console.log(
-    //   "This is the participant ID of the new user with the next house abbreviation:",
-    //   participantID
-    // );
+
+    // Increment the participant ID counter if the last abbreviation was "ALI"
+    if (lastParticipantID.startsWith("ALI")) {
+      participantIDCounter++;
+    }
   } else {
-    // Generate participant ID without incrementing the counter
+    // Generate participant ID with the default abbreviation
     participantID = generateParticipantID();
-    // console.log(
-    //   "This is the participant ID of the new user if the last user participant ID is not ALI:",
-    //   participantID
-    // );
   }
 
-  // Generate the unique ID
   const uniqueID = `TOYCAC24-${categoryID}-${participantID}`;
 
   return uniqueID;

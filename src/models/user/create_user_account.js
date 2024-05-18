@@ -71,13 +71,9 @@ userSchema.pre("validate", function (next) {
     this.institution = undefined;
     this.yearOfGraduation = undefined;
   } else if (this.category === "nonTimsanite") {
-    // New category
     // Additional fields required for Non-Timsanites category
-    if (!this.healthCondition) {
-      this.invalidate(
-        "healthCondition",
-        "Kindly specify what you're allergic to"
-      );
+    if (!this.NTMBIO) {
+      this.invalidate("NTMBIO", "Kindly tell us about you");
     }
     // Other fields for Non-Timsanites category validation can be added here
     this.institution = undefined;

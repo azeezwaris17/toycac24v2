@@ -34,6 +34,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Select from "react-select";
 
+export const config = {
+  runtime: "experimental-edge",
+};
+
 const institutions = [
   {
     value: "Emmanuel Alayande University of Education",
@@ -85,10 +89,6 @@ const institutions = [
     label: "Others",
   },
 ];
-
-export const config = {
-  runtime: "experimental-edge",
-};
 
 export default function RegisterUser() {
   // Inside your functional component
@@ -371,10 +371,10 @@ export default function RegisterUser() {
                 className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
               >
                 <option value="">Select Category</option>
-                <option value="student">Student</option>
-                <option value="iotb">IOTB</option>
-                <option value="children">Children</option>
-                <option value="nonTimsanite">Non TIMSANITE</option>
+                <option value="student">TIMSANITE (Student)</option>
+                <option value="iotb">IOTB (Alumnus)</option>
+                <option value="children">Children (aged 6-12yrs)</option>
+                <option value="nonTimsanite">Non-TIMSANITE</option>
               </select>
             </div>
           </div>

@@ -203,7 +203,7 @@ export default function RegisterUser() {
         setTimeout(async () => {
           const result = await dispatch(createUserAccount(newFormData));
           resolve(result);
-        }, 1000); // delay by 1 seconds
+        }, 2000); // delay by 1 seconds
       });
 
       // console.log("Response:", response);

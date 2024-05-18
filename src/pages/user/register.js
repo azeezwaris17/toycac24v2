@@ -197,7 +197,14 @@ export default function RegisterUser() {
         }
       }
 
-      const response = await dispatch(createUserAccount(newFormData));
+      // const response = await dispatch(createUserAccount(newFormData));
+
+      const response = await new Promise((resolve) => {
+        setTimeout(async () => {
+          const result = await dispatch(createUserAccount(newFormData));
+          resolve(result);
+        }, 1000); // delay by 1 seconds
+      });
 
       // console.log("Response:", response);
 
@@ -212,7 +219,7 @@ export default function RegisterUser() {
           router.push(
             `/user/signin?uniqueID=${encodeURIComponent(userUniqueID)}`
           );
-        }, 5000);
+        }, 2000);
       } else {
         if (response.payload && response.payload.error) {
           const { status, data } = response.payload.error;

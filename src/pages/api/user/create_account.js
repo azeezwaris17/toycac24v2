@@ -212,7 +212,7 @@ function getCategoryID(category) {
       return "IOTB";
     case "children":
       return "CHD";
-    case "nontimsanite":
+    case "nonTimsanite":
       return "NTMS";
     default:
       return "";

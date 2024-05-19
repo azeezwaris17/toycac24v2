@@ -154,7 +154,7 @@ const UserDetailsModal = ({ user, onClose, onApprove }) => {
           </div>
 
           {/* body */}
-          <div className="px-4 py-6">
+          <div className="flex flex-col gap-3 px-4 py-6">
             <p>Full Name: {user.fullName}</p>
             <p>Email: {user.email}</p>
             <p>Username: {user.uniqueID}</p>

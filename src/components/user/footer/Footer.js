@@ -2,7 +2,6 @@ import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Footer() {
-
   const currentYear = new Date().getFullYear();
 
   return (
@@ -14,13 +13,11 @@ export default function Footer() {
         </div>
 
         <div className="flex justify-center items-center space-x-1">
+          <p className="hover:underline">TOYCAC</p>
           <p className=" text-[#647862]  sm:mb-0">&copy; {currentYear} </p>
-          <p className="hover:underline">TOYCAC&apos;24</p>
-          <p>Allrights reserved.</p>
+          <p>All rights reserved.</p>
         </div>
-
       </div>
-
     </footer>
   );
 }

@@ -25,11 +25,14 @@ export default function CampRules({ userData }) {
         </h1>
         <p className="text-gray-800">
           Hi! <span className="text-[#886b29]">{userData.fullName}</span>,
-          Welcome. We are glad to welcome you to the TIMSAN Oyo State Camp and
-          Conference 2024. To ensure a safe, respectful, and enriching
-          experience for all attendees, we have established the following rules
-          and regulations. Your cooperation by abiding to this rules will be
-          greatly appreciated.
+          Welcome. We are glad to have you registered for TIMSAN Oyo State Camp
+          and Conference 2024.{" "}
+        </p>
+
+        <p className="text-gray-800">
+          To ensure a safe, respectful, and enriching experience for all
+          attendees, we have established the following rules and regulations.
+          Your cooperation by abiding to this rules will be greatly appreciated.
         </p>
       </div>
       <div className="mb-8">
@@ -163,7 +166,7 @@ export default function CampRules({ userData }) {
             at the venue.
           </li>
           <li className="text-gray-800">
-            Follow instructions from event staff in case of an emergency.
+            Follow instructions from camp committees in case of an emergency.
           </li>
         </ul>
       </div>

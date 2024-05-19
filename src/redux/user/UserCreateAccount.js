@@ -18,7 +18,6 @@ export const createUserAccount = createAsyncThunk(
       // Send POST request to create super admin account
       const response = await axios.post("/api/user/create_account", formData);
       // console.log("This is the server response log:", response);
-      // console.log(response.payload);
       return response.data; // Return data upon successful creation
     } catch (error) {
       // Extract status code and message from the error response

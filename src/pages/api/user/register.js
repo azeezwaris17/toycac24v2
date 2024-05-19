@@ -12,8 +12,6 @@ app.use(express.json());
 
 const upload = multer({ dest: "uploads/proofOfPayment" });
 
-connectDB();
-
 // Load credentials from a JSON file
 // Define the service account credentials
 const credentials = {

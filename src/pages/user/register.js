@@ -24,6 +24,10 @@ import { MdCategory } from "react-icons/md";
 import { MdOutlineDriveFolderUpload } from "react-icons/md";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { IoSchoolOutline, IoSchool } from "react-icons/io5";
+import { TbReportMedical } from "react-icons/tb";
+import { ImProfile } from "react-icons/im";
+import { TbCategoryPlus } from "react-icons/tb";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 // import { validateRegistrationFormData } from "../../utils/user/registrationFormValidation";
 
@@ -206,7 +210,7 @@ export default function RegisterUser() {
         }, 2000); // delay by 1 seconds
       });
 
-      // console.log("Response:", response);
+      console.log("Response:", response);
 
       if (
         response.payload &&
@@ -222,8 +226,11 @@ export default function RegisterUser() {
         }, 2000);
       } else {
         if (response.payload && response.payload.error) {
+          console.log(response.payload.error);
+
           const { status, data } = response.payload.error;
           console.log("Status:", status);
+
           if (status === 500) {
             toast.error(
               data && data.message ? data.message : "Server Error! Try again."
@@ -368,7 +375,7 @@ export default function RegisterUser() {
               Category
             </label>
             <div className="flex items-center">
-              <MdCategory className="h-5 w-5 mr-2 text-[#DFBF76]" />
+              <TbCategoryPlus className="h-5 w-5 mr-2 text-[#DFBF76]" />
               <select
                 id="category"
                 name="category"
@@ -535,8 +542,19 @@ export default function RegisterUser() {
                     Briefly tell us about you?
                   </label>
                   <div className="flex items-center">
-                    <BiSolidInstitution className="h-5 w-5 mr-2 text-[#DFBF76]" />
-                    <input
+                    <ImProfile className="h-5 w-5 mr-2 text-[#DFBF76]" />
+
+                    <textarea
+                      id="NTMBIO"
+                      name="NTMBIO"
+                      placeholder="Briefly tell us about you?"
+                      value={formData.NTMBIO}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    ></textarea>
+
+                    {/* <input
                       type="text"
                       id="NTMBIO"
                       name="NTMBIO"
@@ -545,7 +563,7 @@ export default function RegisterUser() {
                       onChange={handleInputChange}
                       required
                       className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                    />
+                    /> */}
                   </div>
                 </div>
               )}
@@ -557,8 +575,17 @@ export default function RegisterUser() {
                   Medical Condition
                 </label>
                 <div className="flex items-center">
-                  <FiUser className="h-5 w-5 mr-2 text-[#DFBF76]" />
-                  <input
+                  <TbReportMedical className="h-5 w-5 mr-2 text-[#DFBF76]" />
+                  <textarea
+                    id="medicalCondition"
+                    name="medicalCondition"
+                    placeholder="Medical Condition"
+                    value={formData.medicalCondition}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                  ></textarea>
+                  {/* <input
                     type="text"
                     id="medicalCondition"
                     name="medicalCondition"
@@ -567,7 +594,7 @@ export default function RegisterUser() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
-                  />
+                  /> */}
                 </div>
               </div>
 
@@ -632,7 +659,7 @@ export default function RegisterUser() {
                   Confirm Password
                 </label>
                 <div className="flex items-center">
-                  <FiLock className="h-5 w-5 mr-2 text-[#DFBF76]" />
+                  <RiLockPasswordLine className="h-5 w-5 mr-2 text-[#DFBF76]" />
                   <div className="relative w-full">
                     <input
                       type={showConfirmPassword ? "text" : "password"}

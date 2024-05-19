@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdCheck } from "react-icons/md";
 import { Button, Modal } from "flowbite-react";
 
-export default function CampRules() {
+export default function CampRules({ userData }) {
   const [agree, setAgree] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
@@ -19,12 +19,14 @@ export default function CampRules() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-[#DFBF76] text-2xl font-semibold mb-4">
-          TIMSAN Oyo State Camp and Conference 2024 - Rules and Regulations
+        <h1 className="text-[#647862] text-2xl font-semibold mb-4">
+          TIMSAN Oyo State Camp and Conference 2024 -{" "}
+          <span className="text-[#886b29]">Rules and Regulations</span>
         </h1>
         <p className="text-gray-800">
-          Dear Participants, We are glad to welcome you to the TIMSAN Oyo State
-          Camp and Conference 2024. To ensure a safe, respectful, and enriching
+          Hi! <span className="text-[#886b29]">{userData.fullName}</span>,
+          Welcome. We are glad to welcome you to the TIMSAN Oyo State Camp and
+          Conference 2024. To ensure a safe, respectful, and enriching
           experience for all attendees, we have established the following rules
           and regulations. Your cooperation by abiding to this rules will be
           greatly appreciated.
@@ -227,7 +229,7 @@ export default function CampRules() {
       </div>
 
       <div className="mb-8">
-        <p className="text-gray-500">
+        <p className="text-[#886b29]">
           <span className="text-[#647862]">N.B-</span>Failure to adhere to these
           rules and regulations may result in unfriendly action being taken by
           the camp organizers. Your cooperation ensures a positive and rewarding
@@ -264,7 +266,7 @@ export default function CampRules() {
         <Modal.Body>
           <div className="space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Thank you for choosing to agree to the camp rules and regulations.
+              Thank you for chosen to abide by the camp rules and regulations.
               Please check back later for other pages and instructions.
             </p>
           </div>

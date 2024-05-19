@@ -41,7 +41,7 @@ const Dashboard = () => {
   const renderComponent = () => {
     switch (activeComponent) {
       case "camp_rules":
-        return <CampRules fullName={userData.fullName} />;
+        return <CampRules userData={userData} />;
       default:
         return null;
     }

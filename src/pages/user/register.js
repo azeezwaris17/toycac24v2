@@ -210,7 +210,7 @@ export default function RegisterUser() {
         }, 2000); // delay by 1 seconds
       });
 
-      console.log("Response:", response);
+      // console.log("Response:", response);
 
       if (
         response.payload &&
@@ -236,7 +236,9 @@ export default function RegisterUser() {
               data && data.message ? data.message : "Server Error! Try again."
             );
           } else {
-            toast.error("Failed to create account.");
+            toast.error(
+              data && data.message ? data.message : "Failed to create account."
+            );
           }
         }
       }

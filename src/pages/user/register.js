@@ -244,8 +244,8 @@ export default function RegisterUser() {
       }
     } catch (error) {
       console.error("Registration error:", error);
-      setError("Failed to create user account."); // Set error state
-      toast.error("Failed to create user account.");
+      setError("Server error, please try again later."); // Set error state
+      toast.error("Server error, please try again later. ");
     } finally {
       setLoading(false);
     }

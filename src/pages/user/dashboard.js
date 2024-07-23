@@ -1,8 +1,11 @@
+// src/pages/user/dashboard.js
+
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/user/layout/Layout";
 import Sidebar from "@/components/user/sidebar/Sidebar";
 import CampRules from "@/components/user/campRules/camp_rules";
+import LiveChat from "../../components/user/livechat/LiveChat";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
@@ -42,6 +45,12 @@ const Dashboard = () => {
     switch (activeComponent) {
       case "camp_rules":
         return <CampRules userData={userData} />;
+      case "live_chat_medical_team":
+        return <LiveChat team="medical" />;
+      case "live_chat_welfare_team":
+        return <LiveChat team="welfare" />;
+      case "live_chat_ask_it":
+        return <LiveChat team="ask_it" />;
       default:
         return null;
     }

@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userRegistrationAuthReducer from "./user/userRegistrationAuthSlice";
 import userSigninAuthReducer from "./user/userSigninAuthSlice";
 import userCreateAccountAuthReducer from "./user/UserCreateAccount"
+import userResetPasswordReducer from "./user/userResetPassword";
 
 
 
@@ -31,6 +32,7 @@ export default configureStore({
     userRegistrationAuth: userRegistrationAuthReducer,
     userSigninAuth: userSigninAuthReducer,
     userCreateAccountAuth: userCreateAccountAuthReducer,
+    userResetPassword: userResetPasswordReducer,
 
     adminRegistrationAuth: adminRegistrationAuthReducer,
     adminSigninAuth: adminSigninAuthReducer,

@@ -1,8 +1,10 @@
-import React from "react";
+// src/components/user/sidebar/Sidebar.js
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { MdApps, MdExitToApp } from "react-icons/md";
+import { MdApps, MdExitToApp, MdChat } from "react-icons/md";
 
 export default function Sidebar({ onNavigate, activeComponent }) {
+  const [showLiveChatSubmenu, setShowLiveChatSubmenu] = useState(false);
   const router = useRouter();
 
   const menuItem = (label, icon, onClick, isActive) => (
@@ -15,6 +17,20 @@ export default function Sidebar({ onNavigate, activeComponent }) {
         }`}
       >
         {icon}
+        <span className="ml-3">{label}</span>
+      </button>
+    </li>
+  );
+
+  const submenuItem = (label, onClick, isActive) => (
+    <li className="ml-6">
+      <button
+        type="button"
+        onClick={() => onClick && onClick(label.toLowerCase().replace(" ", "_"))}
+        className={`flex items-center p-2 text-base font-medium text-gray-600 hover:text-[#DFBF76] focus:text-[#DFBF76] hover:bg-gray-50 rounded-lg group ${
+          isActive ? "active" : ""
+        }`}
+      >
         <span className="ml-3">{label}</span>
       </button>
     </li>
@@ -38,13 +54,37 @@ export default function Sidebar({ onNavigate, activeComponent }) {
           () => onNavigate("camp_rules"),
           activeComponent === "camp_rules"
         )}
-        {/* {menuItem(
-          "Registered users",
-          <TiUser className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,
-          () => onNavigate("registeredUsers"),
-          activeComponent === "registeredUsers"
-        )} */}
-
+        <li>
+          <button
+            type="button"
+            onClick={() => setShowLiveChatSubmenu(!showLiveChatSubmenu)}
+            className={`flex items-center p-2 text-base font-medium text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] hover:bg-gray-100 rounded-lg group ${
+              activeComponent.includes("live_chat") ? "active" : ""
+            }`}
+          >
+            <MdChat className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />
+            <span className="ml-3">Live Chat</span>
+          </button>
+          {showLiveChatSubmenu && (
+            <ul className="mt-2 space-y-2">
+              {submenuItem(
+                "Medical Team",
+                onNavigate,
+                activeComponent === "live_chat_medical_team"
+              )}
+              {submenuItem(
+                "Welfare Team",
+                onNavigate,
+                activeComponent === "live_chat_welfare_team"
+              )}
+              {submenuItem(
+                "Ask it",
+                onNavigate,
+                activeComponent === "live_chat_ask_it"
+              )}
+            </ul>
+          )}
+        </li>
       </ul>
 
       <hr />
@@ -53,8 +93,7 @@ export default function Sidebar({ onNavigate, activeComponent }) {
         {menuItem(
           "Signout",
           <MdExitToApp className="w-6 h-6 text-gray-800 dark:text-white" />,
-          handleSignout, 
-          
+          handleSignout
         )}
       </ul>
     </aside>

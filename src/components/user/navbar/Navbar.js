@@ -1,17 +1,20 @@
 // src/components/user/navbar/Navbar.js
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router"; 
+import { useRouter } from "next/router";
+import { MdMenu, MdChat } from "react-icons/md";
 
 export default function Navbar({ onNavigate, username, fullName }) {
   const [activeButton, setActiveButton] = useState(null);
+  const [liveChatMenuOpen, setLiveChatMenuOpen] = useState(false);
   const menuRef = useRef(null);
-  const router = useRouter(); 
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setActiveButton(null);
+        setLiveChatMenuOpen(false);
       }
     };
 
@@ -26,9 +29,12 @@ export default function Navbar({ onNavigate, username, fullName }) {
     setActiveButton(activeButton === buttonName ? null : buttonName);
   };
 
-  // Function to handle sign out
-   const handleSignOut = () => {
-    router.push("/user/signin"); 
+  const handleLiveChatClick = () => {
+    setLiveChatMenuOpen(!liveChatMenuOpen);
+  };
+
+  const handleSignOut = () => {
+    router.push("/user/signin");
     setActiveButton(null);
   };
 
@@ -55,26 +61,13 @@ export default function Navbar({ onNavigate, username, fullName }) {
         </span>
       </div>
 
-
       {/* Hamburger menu button */}
       <div className="block lg:hidden">
         <button
           className="text-gray-800 focus:outline-none"
           onClick={() => handleHamburgerClick("menu")}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
+          <MdMenu className="w-6 h-6" />
         </button>
       </div>
 
@@ -99,14 +92,56 @@ export default function Navbar({ onNavigate, username, fullName }) {
                 Camp rules
               </button>
             </li>
-        
-
-            <hr />
-
             <li>
-            <button
+              <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={handleSignOut} // Use handleSignOut function
+                onClick={handleLiveChatClick}
+              >
+                Live Chat
+              </button>
+              {liveChatMenuOpen && (
+                <ul className="mt-2 ml-4">
+                  <li>
+                    <button
+                      className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+                      onClick={() => {
+                        onNavigate("live_chat_medical_team");
+                        setActiveButton(null);
+                      }}
+                    >
+                      Medical Team
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+                      onClick={() => {
+                        onNavigate("live_chat_welfare_team");
+                        setActiveButton(null);
+                      }}
+                    >
+                      Welfare Team
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+                      onClick={() => {
+                        onNavigate("live_chat_ask_it");
+                        setActiveButton(null);
+                      }}
+                    >
+                      Ask it
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </li>
+            <hr />
+            <li>
+              <button
+                className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+                onClick={handleSignOut}
               >
                 Sign Out
               </button>

@@ -36,11 +36,16 @@ const Dashboard = () => {
   }, [user, router]);
 
   const handleNavigate = (path) => {
-    const newPath = path === "camp_rules" ? "/user/dashboard" : `/user/${path}`;
+    let newPath;
+    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_ask_it"].includes(path)) {
+      newPath = `/user/livechat/${path}`;
+    } else {
+      newPath = `/user/${path}`;
+    }
     window.history.replaceState({}, document.title, newPath);
     setActiveComponent(path);
   };
-
+  
   const renderComponent = () => {
     switch (activeComponent) {
       case "camp_rules":
@@ -52,7 +57,7 @@ const Dashboard = () => {
       case "live_chat_ask_it":
         return <LiveChat team="ask_it" />;
       default:
-        return null;
+        return <CampRules userData={userData} />;
     }
   };
 

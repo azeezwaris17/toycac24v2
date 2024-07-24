@@ -208,8 +208,9 @@ export default function SigninUser() {
             </button>
           </div>
 
+          <div className="flex items-center justify-between mt-4">
           <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-2">
-            Don&apos;t have an account yet?{" "}
+            {/* Don&apos;t have an account yet?{" "} */}
             <Link
               href="/user/register"
               className="font-medium text-[#DFBF76] hover:underline"
@@ -217,6 +218,18 @@ export default function SigninUser() {
               Register
             </Link>
           </p>
+
+          <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-2">
+           
+            <Link
+              href="/user/reset-password"
+              className="font-medium text-[#DFBF76] hover:underline"
+            >
+              Reset password
+            </Link>
+          </p>
+
+          </div>
         </form>
 
         <div className="mt-4">

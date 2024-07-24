@@ -150,7 +150,7 @@ const ResetPassword = () => {
                     name="email"
                     placeholder="Enter Email"
                     required
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
                   />
                   <FiMail className="absolute right-3 h-4 w-4 text-gray-900" />
                 </div>
@@ -193,7 +193,7 @@ const ResetPassword = () => {
                     name="email"
                     value={email}
                     readOnly
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
                   />
                   <FiMail className="absolute right-3 h-4 w-4 text-gray-900" />
                 </div>
@@ -210,7 +210,7 @@ const ResetPassword = () => {
                     required
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
                   />
                   <button
                     type="button"
@@ -240,7 +240,7 @@ const ResetPassword = () => {
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-primary"
                   />
                   <button
                     type="button"

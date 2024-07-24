@@ -7,10 +7,21 @@ const Layout = ({
   setActiveComponent,
   userData,
 }) => {
+  // const handleNavigate = (path) => {
+  //   // Your handleNavigate logic
+  //   const newPath =
+  //     path === "camp_rules" ? "/user/dashboard" : `/user/${path}`;
+  //   window.history.replaceState({}, document.title, newPath);
+  //   setActiveComponent(path);
+  // };
+
   const handleNavigate = (path) => {
-    // Your handleNavigate logic
-    const newPath =
-      path === "camp_rules" ? "/user/dashboard" : `/user/${path}`;
+    let newPath;
+    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_media_team", "live_chat_ask_it"].includes(path)) {
+      newPath = `/user/livechat/${path}`;
+    } else {
+      newPath = `/user/${path}`;
+    }
     window.history.replaceState({}, document.title, newPath);
     setActiveComponent(path);
   };

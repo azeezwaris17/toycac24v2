@@ -3,7 +3,8 @@ import { useEffect } from "react";
 
 const liveChatURLs = {
   medical: "https://example.com/livechat/medical_team", // replace with actual URL
-  welfare: "https://example.com/livechat/welfare_team", // replace with actual URL
+  welfare: "https://example.com/livechat/welfare_team",
+  media: "https://direct.lc.chat/18286317/4", 
   ask_it: "https://example.com/livechat/ask_it" // replace with actual URL
 };
 

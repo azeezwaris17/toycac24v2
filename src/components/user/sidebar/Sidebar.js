@@ -77,6 +77,12 @@ export default function Sidebar({ onNavigate, activeComponent }) {
                 onNavigate,
                 activeComponent === "live_chat_welfare_team"
               )}
+
+{submenuItem(
+                "Media Team",
+                onNavigate,
+                activeComponent === "live_chat_media_team"
+              )}
               {submenuItem(
                 "Ask it",
                 onNavigate,

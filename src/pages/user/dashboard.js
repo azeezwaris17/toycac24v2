@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const handleNavigate = (path) => {
     let newPath;
-    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_ask_it"].includes(path)) {
+    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_media_team", "live_chat_ask_it"].includes(path)) {
       newPath = `/user/livechat/${path}`;
     } else {
       newPath = `/user/${path}`;
@@ -54,6 +54,8 @@ const Dashboard = () => {
         return <LiveChat team="medical" />;
       case "live_chat_welfare_team":
         return <LiveChat team="welfare" />;
+        case "live_chat_media_team":
+        return <LiveChat team="media" />;
       case "live_chat_ask_it":
         return <LiveChat team="ask_it" />;
       default:

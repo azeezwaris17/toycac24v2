@@ -123,6 +123,18 @@ export default function Navbar({ onNavigate, username, fullName }) {
                       Welfare Team
                     </button>
                   </li>
+
+                  <li>
+                    <button
+                      className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+                      onClick={() => {
+                        onNavigate("live_chat_media_team");
+                        setActiveButton(null);
+                      }}
+                    >
+                      Media Team
+                    </button>
+                  </li>
                   <li>
                     <button
                       className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"

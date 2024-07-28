@@ -1,4 +1,3 @@
-// src/components/user/navbar/Navbar.js
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -123,7 +122,6 @@ export default function Navbar({ onNavigate, username, fullName }) {
                       Welfare Team
                     </button>
                   </li>
-
                   <li>
                     <button
                       className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -149,18 +147,77 @@ export default function Navbar({ onNavigate, username, fullName }) {
                 </ul>
               )}
             </li>
-            <hr />
-            <li>
-              <button
-                className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </button>
-            </li>
           </ul>
         </div>
       )}
+
+      {/* Nav items for larger screens */}
+      <div className="hidden lg:flex items-center space-x-2 md:space-x-4">
+        <p>Hi! {username}</p>
+        <button
+          className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+          onClick={() => handleHamburgerClick("live_chat")}
+        >
+          <MdChat className="w-6 h-6" />
+        </button>
+        {activeButton === "live_chat" && (
+          <ul
+            ref={menuRef}
+            className="absolute z-10 w-48 py-2 mt-2 bg-white border border-gray-200 rounded-lg shadow-md right-2"
+          >
+            <li>
+              <button
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                onClick={() => {
+                  onNavigate("live_chat_medical_team");
+                  setActiveButton(null);
+                }}
+              >
+                Medical Team
+              </button>
+            </li>
+            <li>
+              <button
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                onClick={() => {
+                  onNavigate("live_chat_welfare_team");
+                  setActiveButton(null);
+                }}
+              >
+                Welfare Team
+              </button>
+            </li>
+            <li>
+              <button
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                onClick={() => {
+                  onNavigate("live_chat_media_team");
+                  setActiveButton(null);
+                }}
+              >
+                Media Team
+              </button>
+            </li>
+            <li>
+              <button
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                onClick={() => {
+                  onNavigate("live_chat_ask_it");
+                  setActiveButton(null);
+                }}
+              >
+                Ask it
+              </button>
+            </li>
+          </ul>
+        )}
+        <button
+          className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+          onClick={handleSignOut}
+        >
+          Sign out
+        </button>
+      </div>
     </nav>
   );
 }

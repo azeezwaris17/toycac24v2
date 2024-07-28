@@ -7,13 +7,6 @@ const Layout = ({
   setActiveComponent,
   userData,
 }) => {
-  // const handleNavigate = (path) => {
-  //   // Your handleNavigate logic
-  //   const newPath =
-  //     path === "camp_rules" ? "/user/dashboard" : `/user/${path}`;
-  //   window.history.replaceState({}, document.title, newPath);
-  //   setActiveComponent(path);
-  // };
 
   const handleNavigate = (path) => {
     let newPath;

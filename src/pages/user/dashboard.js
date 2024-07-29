@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/user/layout/Layout";
-import Sidebar from "@/components/user/sidebar/Sidebar";
 import CampRules from "../../components/user/campRules/camp_rules";
 import LiveChat from "../../components/user/livechat/LiveChat";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import Sidebar from "@/components/user/sidebar/Sidebar";
 
 const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("camp_rules");
@@ -23,9 +23,10 @@ const Dashboard = () => {
     if (!user || !user.success) {
       router.push("/user/signin");
     } else {
-      const { fullName, email, uniqueID, proofofPayment } = user.data;
+      const { fullName, username, email, uniqueID, proofofPayment } = user.data;
       setUserData({
         fullName: fullName,
+        username: username,
         email: email,
         username: uniqueID,
         proof_of_payment: proofofPayment,
@@ -34,13 +35,6 @@ const Dashboard = () => {
   }, [user, router]);
 
   const handleNavigate = (path) => {
-    let newPath;
-    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_media_team", "live_chat_ask_it"].includes(path)) {
-      newPath = `/user/livechat/${path}`;
-    } else {
-      newPath = `/user/${path}`;
-    }
-    window.history.replaceState({}, document.title, newPath);
     setActiveComponent(path);
   };
 

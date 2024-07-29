@@ -270,7 +270,6 @@ export default function CampRules({ userData }) {
           <div className="space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               Thank you for chosen to abide by the camp rules and regulations.
-              Please check back later for other pages and instructions.
             </p>
           </div>
         </Modal.Body>

@@ -25,6 +25,7 @@ const Layout = ({
         <Navbar
           onNavigate={handleNavigate}
           fullName={userData.fullName}
+          username={userData.username}
         />
       </header>
 

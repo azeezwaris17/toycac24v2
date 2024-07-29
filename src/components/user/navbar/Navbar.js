@@ -76,10 +76,14 @@ export default function Navbar({ onNavigate, username, fullName }) {
           ref={menuRef}
           className="absolute top-8 z-40 px-4 right-0 rounded-md py-8 w-full mt-4 md:hidden bg-white"
         >
+         
+          <p>Hi! {username}</p>
+
           <hr />
-          <p>Hi! {fullName}</p>
 
           <ul className="flex flex-col font-medium">
+
+            {/* camp rules */}
             <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -91,6 +95,8 @@ export default function Navbar({ onNavigate, username, fullName }) {
                 Camp rules
               </button>
             </li>
+
+            {/* live chat */}
             <li>
               <button
                 className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -98,8 +104,11 @@ export default function Navbar({ onNavigate, username, fullName }) {
               >
                 Live Chat
               </button>
+
+              {/* live chat submenu */}
               {liveChatMenuOpen && (
                 <ul className="mt-2 ml-4">
+                  {/* medical team */}
                   <li>
                     <button
                       className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -111,6 +120,8 @@ export default function Navbar({ onNavigate, username, fullName }) {
                       Medical Team
                     </button>
                   </li>
+
+                  {/* welfare team */}
                   <li>
                     <button
                       className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -122,6 +133,8 @@ export default function Navbar({ onNavigate, username, fullName }) {
                       Welfare Team
                     </button>
                   </li>
+
+                  {/* media team */}
                   <li>
                     <button
                       className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -133,6 +146,8 @@ export default function Navbar({ onNavigate, username, fullName }) {
                       Media Team
                     </button>
                   </li>
+
+                  {/* Ask it */}
                   <li>
                     <button
                       className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
@@ -144,9 +159,24 @@ export default function Navbar({ onNavigate, username, fullName }) {
                       Ask it
                     </button>
                   </li>
+
+               
+
+
                 </ul>
               )}
             </li>
+
+            <hr />
+
+<li>
+  <button
+    className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+    onClick={handleSignOut}
+  >
+    Signout
+  </button>
+</li>
           </ul>
         </div>
       )}
@@ -154,8 +184,10 @@ export default function Navbar({ onNavigate, username, fullName }) {
       {/* Nav items for larger screens */}
       <div className="hidden lg:flex items-center space-x-2 md:space-x-4">
         <p>Hi! {username}</p>
+
+
         <button
-          className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+          className="hidden p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
           onClick={() => handleHamburgerClick("live_chat")}
         >
           <MdChat className="w-6 h-6" />
@@ -212,7 +244,7 @@ export default function Navbar({ onNavigate, username, fullName }) {
           </ul>
         )}
         <button
-          className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+          className="text-white bg-[#647862] hover:bg-[#DFBF76] font-medium rounded-lg text-sm px-4 py-2 text-center"
           onClick={handleSignOut}
         >
           Sign out

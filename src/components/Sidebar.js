@@ -10,7 +10,7 @@ export default function Sidebar({ onNavigate, activeComponent }) {
     <li>
       <button
         type="button"
-        onClick={() => onClick && onClick(label.toLowerCase())}
+        onClick={() => onClick(label.toLowerCase())}
         className={`flex items-center p-2 text-base font-medium text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] hover:bg-gray-100 rounded-lg group ${
           isActive ? "active" : ""
         }`}
@@ -25,7 +25,7 @@ export default function Sidebar({ onNavigate, activeComponent }) {
     <li className="ml-6">
       <button
         type="button"
-        onClick={() => onClick && onClick(label.toLowerCase().replace(" ", "_"))}
+        onClick={() => onClick(label.toLowerCase().replace(" ", "_"))}
         className={`flex items-center p-2 text-base font-medium text-gray-600 hover:text-[#DFBF76] focus:text-[#DFBF76] hover:bg-gray-50 rounded-lg group ${
           isActive ? "active" : ""
         }`}
@@ -50,7 +50,7 @@ export default function Sidebar({ onNavigate, activeComponent }) {
         {menuItem(
           "Camp Rules",
           <MdApps className="w-6 h-6 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76]" />,
-          () => onNavigate("camp_rules"),
+          onNavigate,
           activeComponent === "camp_rules"
         )}
         <li>

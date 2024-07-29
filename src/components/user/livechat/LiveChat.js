@@ -12,7 +12,7 @@ const LiveChat = ({ team }) => {
       chatUrl = "https://example.com/livechat/welfare_team";
       break;
     case "media_team":
-      chatUrl = "https://example.com/livechat/media_team";
+      chatUrl = "https://direct.lc.chat/18286317/4";
       break;
     case "ask_it":
       chatUrl = "https://example.com/livechat/ask_it";

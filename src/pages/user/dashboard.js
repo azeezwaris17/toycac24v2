@@ -43,7 +43,7 @@ const Dashboard = () => {
     window.history.replaceState({}, document.title, newPath);
     setActiveComponent(path);
   };
-  
+
   const renderComponent = () => {
     switch (activeComponent) {
       case "camp_rules":

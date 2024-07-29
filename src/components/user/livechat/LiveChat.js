@@ -23,7 +23,7 @@ const LiveChat = ({ team }) => {
   }
 
   return (
-    <div className="iframe-container">
+    <div className="h-full w-full p-12">
       <Iframe
         url={chatUrl}
         width="100%"

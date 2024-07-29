@@ -134,6 +134,19 @@ export default function Navbar({ onNavigate, username, fullName }) {
                     </button>
                   </li>
 
+                  {/* protocol team */}
+                  <li>
+                    <button
+                      className="p-2 text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] rounded-lg"
+                      onClick={() => {
+                        onNavigate("live_chat_protocol_team");
+                        setActiveButton(null);
+                      }}
+                    >
+                      Protocol Team
+                    </button>
+                  </li>
+
                   {/* media team */}
                   <li>
                     <button

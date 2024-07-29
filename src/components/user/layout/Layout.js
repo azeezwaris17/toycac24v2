@@ -10,7 +10,7 @@ const Layout = ({
 
   const handleNavigate = (path) => {
     let newPath;
-    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_media_team", "live_chat_ask_it"].includes(path)) {
+    if (["live_chat_medical_team", "live_chat_welfare_team", "live_chat_protocol_team", "live_chat_media_team", "live_chat_ask_it"].includes(path)) {
       newPath = `/user/livechat/${path}`;
     } else {
       newPath = `/user/${path}`;

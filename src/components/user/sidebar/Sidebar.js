@@ -59,6 +59,8 @@ export default function Sidebar({ onNavigate, username, fullName }) {
                 Medical Team
               </button>
             </li>
+
+            {/* welfare team */}
             <li>
               <button
                 className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
@@ -71,6 +73,22 @@ export default function Sidebar({ onNavigate, username, fullName }) {
                 Welfare Team
               </button>
             </li>
+
+            {/* protocol team */}
+            <li>
+              <button
+                className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
+                onClick={() => {
+                  onNavigate("live_chat_protocol_team");
+                  setActiveButton("live_chat_protocol_team");
+                  setLiveChatMenuOpen(false);
+                }}
+              >
+                Protocol Team
+              </button>
+            </li>
+
+            {/* media team */}
             <li>
               <button
                 className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
@@ -83,6 +101,8 @@ export default function Sidebar({ onNavigate, username, fullName }) {
                 Media Team
               </button>
             </li>
+
+            {/* Ask it */}
             <li>
               <button
                 className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 w-full text-left"
@@ -98,6 +118,9 @@ export default function Sidebar({ onNavigate, username, fullName }) {
           </ul>
         )}
       </div>
+
+      <hr />
+      
       <div className="mt-auto">
         <button
           className="flex items-center p-2 text-base font-medium text-gray-800 hover:text-[#DFBF76] focus:text-[#DFBF76] hover:bg-gray-100 rounded-lg w-full"

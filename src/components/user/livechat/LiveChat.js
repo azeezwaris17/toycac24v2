@@ -7,19 +7,23 @@ const LiveChat = ({ team }) => {
 
   switch (team) {
     case "medical_team":
-      chatUrl = "https://example.com/livechat/medical_team";
+      chatUrl = "https://direct.lc.chat/18336834/2";
       teamName = "Medical Team";
       break;
     case "welfare_team":
-      chatUrl = "https://example.com/livechat/welfare_team";
+      chatUrl = "https://direct.lc.chat/18336834/3";
       teamName = "Welfare Team";
       break;
+      case "protocol_team":
+        chatUrl = "https://direct.lc.chat/18336834/4";
+        teamName = "Protocol Team";
+        break;
     case "media_team":
-      chatUrl = "https://direct.lc.chat/18286317/4";
+      chatUrl = "https://direct.lc.chat/18336834/1";
       teamName = "Media Team";
       break;
     case "ask_it":
-      chatUrl = "https://example.com/livechat/ask_it";
+      chatUrl = "https://direct.lc.chat/18336834/5";
       teamName = "Ask It";
       break;
     default:

@@ -46,6 +46,8 @@ const Dashboard = () => {
         return <LiveChat team="medical_team" />;
       case "live_chat_welfare_team":
         return <LiveChat team="welfare_team" />;
+        case "live_chat_protocol_team":
+          return <LiveChat team="protocol_team" />;
       case "live_chat_media_team":
         return <LiveChat team="media_team" />;
       case "live_chat_ask_it":
